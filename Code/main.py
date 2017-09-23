@@ -50,7 +50,7 @@ for s in states:
             transitions.append((s,a,s,1))
 mdp = MDP(states, accepting_states, alphabet, transitions)
 
-obstaclemovestates = [44,51]
+obstaclemovestates = [44,45,52,51]
 accepting_states = set()
 transitions = []
 alphabet = range(1)
