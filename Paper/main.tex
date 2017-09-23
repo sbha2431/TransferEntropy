@@ -1,0 +1,114 @@
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+%\renewcommand{\baselinestretch}{2}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\input{macros}
+
+\title{Minimal-Information Control of MDPs with Temporal Logic Constraints
+}
+
+\author{Suda Bharadwaj and Takashi Tanaka and Ufuk Topcu% <-this % stops a space
+%\thanks{*This work was not supported by any organization}% <-this % stops a space
+%\thanks{$^{1}$Albert Author is with Faculty of Electrical Engineering, Mathematics and Computer Science, University of Twente, 7500 AE Enschede, The Netherlands {\tt\small albert.author@papercept.net}}%
+%\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University, Dayton, OH 45435, USA {\tt\small b.d.researcher@ieee.org}}%
+}
+
+
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sblock} = [draw, fill=blue!20, rectangle, 
+    minimum height=3em, minimum width=3em]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1.2cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the (weighted) sum of the information cost and the cost of failing to satisfy the specification. We provide a method to minimize the transfer entropy from the specified state variables to the controller such that a user specified minimum probability of success is reached. We formulate the problem as solving for an optimal policy in a continuous-state MDP. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present some numerical experiments involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\input{intro}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Preliminaries}
+The sequence $\left(x_1,x_{2}...x_t \right)$ is denoted $x^t$ and the subsequence $\left(x_k,x_{k+1}...x_l \right)$ is denoted by $x_{l}^{k}$. We use upper-case letters to denote random variables and lower-case letters for the realizations of the corresponding random variable. \\
+We denote by $\dist{\mathcal{X}}$ the set of all probability distributions on a finite
+set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_{x\in \mathcal{X}}f(x)=1$. %For $f\in \dist{\mathcal{X}}$ we denote by $\supp(f)$ the \emph{support} of $f$. That is, the set $\{x\in X \st f(x)>0\}$.
+
+%\subsection{Markov decision processes}
+\input{MDP} 
+
+%\subsection{Temporal Logic}
+\input{LTL}
+
+%\subsection{Information theory}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Problem statement}
+\input{problem_Suda}
+
+\input{problem_Takashi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\section{Optimality conditions}
+\input{opt_cond}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Arimoto-Blahut algorithm}
+\input{AB_alg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Communication rate}
+\input{comm_rate.tex}
+
+
+\section{Case studies}
+\input{case_study}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,main}
+
+
+
+\end{document}

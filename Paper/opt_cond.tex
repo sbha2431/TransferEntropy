@@ -1,0 +1,71 @@
+Now, given the optimization problem in equation (\ref{eqn:constopt}), we derive sufficient conditions for optimality for the policy $q_t(u_t|x^t,u^{t-1})$. First, we look at a generalized version of the problem for a single time step. We use that to set up a backwards dynamic programming problem where the generalized version is solved at each step.
+
+\subsection{Generalized static problem}
+Let $X_1,X_2,U,Z$ be random variables taking values from sets $\mathcal{X}_1,\mathcal{X}_2,\mathcal{U},\mathcal{Z}$. Let $c : X_1 \times X_2 \times U \times Z \rightarrow \mathbb{R}$ be an arbitrary function. We can treat the optimization problem in (\ref{eqn:nonconstopt}) as a specific case of the following generalized problem
+
+\begin{align}\label{eqn:genopt}
+\min_{q(u|x_1,x_2,z)} \mathbb{E}\{c\left(x_1,x_2,u,z \right)\} + I(x_2;a|x_1,z)
+\end{align}
+
+\begin{lemma}
+It can be shown that a sufficient optimality condition for the above can be written as the \textit{Gibbs distribution}
+\begin{align}
+q^{*}(u|x_1,x_2,z) = \frac{\nu^{*}(u,x_1|x_2,z)\exp\{-c(x_1,x_2,u,z)\}}{\sum_{u\in \mathcal{U}}\nu^{*}(u,x_1|x_2,z)\exp\{-c(x_1,x_2,u,z)\}}
+\end{align}
+where 
+\begin{align}
+\nu^{*}(u,x_1|x_2,z) = \sum_{\mathcal{X}_2}p(x_2|z,x_1)q^*\left(-c(x_1,x_2,u,z)\right)
+\end{align}
+$p(x_1,x_2,z)-$everywhere.
+\end{lemma}
+
+The proof of this is standard and can be found in \cite{petersen2012robust}. We can substitute this into equation (\ref{eqn:genopt}) to express the optimal value as:
+\begin{align}\label{eqn:statopt}
+-\sum_{\mathcal{X}_2,\mathcal{Z}}\log\left\lbrace\sum_{\mathcal{U}} \nu^{*}(u,x_1|x_2,z)\exp\{ -c(x_1,x_2,u,z)\} \right\rbrace
+\end{align}
+We define partition function
+\begin{align}
+\phi^{*}(x_1,x_2,z) =  \sum_{\mathcal{U}} \nu^{*}(u,x_1|x_2,z)\exp\{ -c(x_1,x_2,u,z)\} 
+\end{align}
+and rewrite equation (\ref{eqn:statopt}) as 
+\begin{align}
+\mathbb{E}^{p(x_2,z)}\left\lbrace\log\{\phi^{*}(x_1,x_2,z) \}\right\rbrace
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Dynamic programming}
+Recall that $\mu_t(x_1^t, x_2^t,u^{t-1})$ is the joint distribution of states and actions. We define the \emph{cost-to-go} function as
+
+\begin{align}
+V_t(\mu_t(x_1^t,& x_2^t,u^{t-1}))  \defeq \nonumber \\
+& \min_{q_{k=t}^T} \sum_{t=1}^{T}\{ \mathbb{E}\{c_t\left(x_{1_t},x_{2_t},u_t \right)\} + I(x_1^t;u^t|u^{t-1},x_2^t) \}
+\end{align}
+This is the \textit{value} of the current \emph{configuration} $\mu_t(x_1^t, x_2^t,u^{t-1})$.
+
+This cost-to-go function must satisfy the Bellman equation given by:
+\begin{align}
+V_t(\mu_t(x_1^t,& x_2^t,u^{t-1})) \defeq \nonumber \\ 
+& \min_{q_t} \left\lbrace \mathbb{E}^{q_t,\mu_t}\left\lbrace c_t(X_{1}^t,X_{2}^t,U_t) + I(X_1^t,U_t \vert X_{2}^t,U^{t-1} \right\rbrace) \right\rbrace
+\end{align}
+
+\begin{align}
+V_t(\mu_t(x_1^t,& x_2^t,u^{t-1})) \defeq \nonumber \\ 
+& \min_{q_t} \{ \mathbb{E}\{\rho_t\left(x_{1_t},x_{2_t},u_t \right)\} + I(x_1^t;u^t|u^{t-1},x_2^t) \}
+\end{align}
+where 
+\begin{align}
+\rho_t\left(x_{1_t},x_{2_t},u^t\right) & \defeq  c_t\left(x_{1_t},x_{2_t},u_t\right) - \nonumber \\ & \sum_{X_{t+1}}p_{t+1}(x_{t+1}|x_t,u_t)\log \phi_{t+1}(x_{t+1},u^t)
+\end{align}
+
+In the standard finite-state MDP setting, the Bellman equation for the cost-to-go function is solved using backwards dynamic programming by evaluating the value function in the entire state space of the MDP. However, this is not feasible in our setting as our state space consists of the space of probability distributions $\mu_t(x_1^t, x_2^t,u^{t-1})$ which is not finite.  
+
+From the previous section, we know the sufficient optimality condition for a candidate solution $q^{*}$ for an optimization problem of the given form is:
+\begin{align}
+q_t^{*}(a_t|s_1^t,s_2^t,a^{t-1}) = \frac{\nu_t^{*}(a_t|s_2^t,a^{t-1})\exp\{-\rho_t\left(s_{1_t},s_{2_t},a^t\right)  \}}{\sum_{u \in \mathcal{U}} \nu_t^{*}(a_t|s_2^t,a^{t-1})\exp\{-\rho_t\left(s_{1_t},s_{2_t},a^t\right)  \}}
+\end{align}
+where 
+
+
+\begin{align}
+\nu_t^{*}(a_t|s_2^t,a^{t-1}) = \sum_{S_1^t}q_t^{*}(a_t|s_1^t,s_2^t,a^{t-1})\mu_t(s_1^t|s_2^t,a^{t-1})
+\end{align}

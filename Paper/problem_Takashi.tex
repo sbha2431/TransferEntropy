@@ -1,0 +1,74 @@
+Consider the control system architecture shown in Figure \ref{fig:NCS} modeled by a finite state discrete-time MDP. The state space $\mathcal{X}$ is composed of the product of two sets  $\mathcal{X} = \mathcal{X}_e \times \mathcal{X}_f$. Hence, each state in the state space $x \in \mathcal{X}$ is partitioned into two state variables $x = (x_e,x_f)$. Recall that a policy is a conditional policy distribution given by $q(u_t|x^t,u^{t-1})$. We can write this now as $q(u_t|x_e^t,x_f^t,u^{t-1})$. We allow the policy synthesizer full access to the value of $x_f$, but we restrict access to the value of $x_e$. As a motivating scenario, imagine the MDP models a Mars rover. The value of $x_e$ is measured by an orbiter while $x_f$ is sensed using on-board sensors. Since the orbiter will only be able to communicate with the rover during part of its orbit, we will want to penalize the reliance on this information in the policy synthesis process. To do this we introduce some information-theoretic terms. 
+
+
+
+Let $X_e \in \mathcal{X}_e,X_f \in \mathcal{X}_f,U\in \mathcal{U}$ be random variables of which $x_e,x_f,u$ are realizations. The \emph{conditional mutual information} is 
+
+\begin{align*}
+I  (X_{e_{t-m}}^t;U_t & \vert U^{t-1}_{t-n},X_{f_{t-m}}^{t}) \defeq \nonumber \\ &\sum_{\mathcal{X}^{t}_f}\sum_{\mathcal{U}^{t-1}}\log\frac{\mu_{t+1}(u_t|x_{t-m}^{t},u_{t-n}^{t-1})}{\mu_{t+1}(u_t\vert u_{t-n}^{t-1})}
+\end{align*}\todo{Fix definition}
+
+
+
+The transfer entropy of degree $(m,n)$ is defined as \cite{schreiber2000}
+
+\begin{align}\label{eqn:TEcond}
+I_{m,n}(X_e^T  \rightarrow & U^{T-1}||X_f^T) \defeq \nonumber \\ & \sum_{t=0}^{T-1} I\left(X_{e_{t-m}}^t;U_t|U^{t-1}_{t-n},X_{f_{t-m}}^{t} \right) .
+\end{align}
+
+
+
+
+
+% An \emph{encoder} and \emph{decoder} are defined as stochastic kernels $e_t(w_t|x^t,w^{t-1})$ and $d_t(u_t|w^t,u^{t-1})$ respectively. $w_t$ is a \emph{codeword} chosen from \emph{codebook} $\mathcal{W}_t$ at time $t$. $|\mathcal{W}_t| = 2^{R_t}$. $R = \sum_{t=1}^T$ is the rate of communication. 
+
+% For example in Figure \ref{fig:NCS}, at each time step the sensor sends data to the encoder which chooses a codeword $w_t$ and passes the message to the decoder. 
+
+
+% \paragraph{Optimal policy}
+% Given an MDP $M=(\mathcal{X},\mathcal{U},p)$ with cost function $c_t: \mathcal{X} \times \mathcal{U} \rightarrow \mathbb{R}$, and finite time horizon $T$, the optimal policy $q$ is one that minimizes the following
+
+% \begin{equation}\label{eqn:optpol}
+% J(X^T,U^{T-1}) \defeq \sum_{t=0}^{T-1}{\mathbb{E}\{c_t(X_t,U_t)\}} + \mathbb{E}\{c_{T}(X_{T})\}
+% \end{equation}
+
+% Informally, the policy minimizes the expected value of the cost over the time horizon. In this setting the optimal policy will be deterministic and Markovian. 
+
+% \paragraph{Expensive-to-measure state variable} We divide the state space $\mathcal{X}$ into expensive and free to measure state variables, \ie $\mathcal{X} = \mathcal{X}_e \times \mathcal{X}_f$. A state $x \in \mathcal{X}$ can be expressed as $x = (x_e,x_f)$ where $x_e \in \mathcal{X}_e$ is expensive-to-measure and $x_f \in \mathcal{X}_f$ is free. 
+
+% Now, consider the following information-constrained optimal control problem:
+% \begin{equation}
+% \min_{\{q_t\}_{t=1}^T} J(X^{T},U^{T-1}) + \beta \sum_{t=0}^T R_t
+% \end{equation}
+% where $\beta \in \mathbb{R}$, $R = \sum_{t=0}^T R_t$ is the rate of communication, and $J(X^T,U^{T-1}) \defeq \sum_{t=0}^{T-1}{\mathbb{E}\{c(X_t,U_t)\}} + \mathbb{E}\{c_{T}(X_{T})\}$ for some state-action dependent cost $c(X_t,U_t) \in \mathbb{R}$. 
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum,text width=2.1cm] (controller) {\textbf{Controller}\\$q_t(u_t|x^t,u^{t-1})$};
+    \node [block, right of=controller,node distance = 3cm,text width=2cm] (dynamics) {\textbf{Dynamics}\\$p(x_{t+1}|x_t,u_t)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \node [output, right of=dynamics] (output) {};
+    \node [sblock, below of=dynamics,text width = 1cm] (xc) {\textbf{Sensor}\\$x_c$};
+    \node [sum, left of=xc] (encoder) {e};
+	\node [sblock, below of=xc,node distance = 1.5cm, text width = 1cm] (xf) {\textbf{Sensor}\\$x_f$};
+	\node [sum, below of=controller,node distance = 1.3cm] (decoder) {d};
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$r$} (sum);
+    \draw [->] (sum) -- node {$e$} (controller);
+    \draw [->] (controller) -- node {$u$} (dynamics);
+    \draw [->] (dynamics) -- node [name=y] {$y$}(output);
+    \draw [->] (y) |- (xc);
+    \draw [->] (xc) -- (encoder);
+    \draw [->] (y) |- (xf);
+    \draw [->] (encoder) -- (decoder);
+     \draw [->] (decoder) -- (sum);
+    \draw [->] (xf) -| node[pos=0.99] {$-$} 
+            node [near end] {}(sum);
+\end{tikzpicture}\caption{Control system architecture where $x_e$ is sensed remotely and has to be transmitted to the controller through an encoder-decoder system.}\label{fig:NCS}
+
+\end{figure}

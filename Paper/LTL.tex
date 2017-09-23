@@ -1,0 +1,38 @@
+
+\paragraph*{Specifications} We utilize linear temporal logic to specify the constraints on the system. Such specifications include invariance, safety or liveness. For example, we can specify that an agent infinitely often patrols a certain set of states (liveness) while not entering undesirable states (safety).  In particular, we will represent specifications as a deterministic \emph{Rabin automaton} (DRA). See \cite{BaierKatoen08,safra1988complexity} for the connections between linear temporal logic specifications and their automata-based representations.
+
+A DRA is a tuple $\mathcal{A} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$ where $\mathcal{S}$ is a finite set of states, $\AP$ is a set of atomic propositions, $2^{\AP}$ is the alphabet of the automaton. $T: \mathcal{S} \times 2^{\AP} \rightarrow \mathcal{S} $ is the transition function and $s_I \in \mathcal{S}$ is the initial state. The acceptance condition $\textrm{Acc}$ is a set of tuples $\{(J_i,K_i) \st i= 0,1,\dots,m \}$ where $J_i,K_i \in \mathcal{S}$. Let a $w = w_0 w_1 \dots \in 2^{\AP}$ be an infinite word in the language of the automaton. A corresponding infinite run is an infinite sequence of states $s_0 w_0 s_1 w_1 \dots \in S$ where $s_0 = s_I$ and $s_{i+1} = T(s_i,w_i)$. Let $\textrm{Inf}(\rho)$ be the set of states appearing infinitely often in a run $\rho$, \ie~the set $\{s \in \mathcal{S} \st \forall i \ge 0, \exists j \ge i, s_j = s\}$. We say $\rho$ is \emph{accepting} if there exists a pair $(J_i,K_i) \in \textrm{Acc}$ such that $\textrm{Inf}(\rho) \cap J_i = \emptyset$ and $\textrm{Inf}(\rho) \cap K_i \neq \emptyset$.
+
+\paragraph*{Product MDP}
+Given an MDP $M=(\mathcal{X},\mathcal{U},p,\AP,L)$ and a specification DRA
+$\mathcal{A} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$, we now define a \emph{product
+MDP}, $\mathcal{M} \defeq M \mathcal{\times A}$, as $\mathcal{M}
+:= (\mathcal{V},\mathcal{U}, \Delta,v_0,\textrm{ACC}_{\mathcal{M}})$ where
+\begin{itemize}
+	\item $\mathcal{V} = \mathcal{X} \times \mathcal{S}$;
+	\item $\Delta: \mathcal{V} \times \mathcal{U} \rightarrow \dist{\mathcal{V}}$ is the probabilistic
+		(partial) function with
+		that $\Delta\left((x_{t+1},s_{t+1})\vert (x_t,s_t)\right) = p(x_{t+1} \vert x_t,u_t ) $ if $T(s_t,L(x_{t+1}))
+		= s_{t+1}$;
+	\item $v_0 = (x_0,s_I)$; is the initial state; and
+	\item $\textrm{Acc}_{\mathcal{M}} =
+		((\hat{J}_i,\hat{K}_i) \st i = 1,\dots,m \land \hat{J}_i = \mathcal{X}
+		\times J_i,\hat{K}_i = \mathcal{X} \times K_i)$ is the accepting condition.
+\end{itemize}
+
+An end component of $\mathcal{M}$ is said to be an \textit{accepting end
+component} if $W \cap \hat{J}_i = \emptyset$ and $W \cap \hat{K}_i \neq
+\emptyset$ for some $(\hat{J}_i,\hat{K}_i) \in \textrm{Acc}_\mathcal{M}$.
+We denote the set of accepting end components in a product MDP $\mathcal{M}$
+by $\textrm{AEC}(\mathcal{M})$, and we denote the set of accepting end \textit{states} as
+$\mathcal{C} := \{v \in W \st (W,x) \in \textrm{AEC}(\mathcal{M})\}$. We know that once we
+enter $v \in \mathcal{W}$ and enact the corresponding policy $q$, the strategy will
+ensure that, for some $(\hat{J}_i,\hat{K}_i) \in \textrm{Acc}_\mathcal{M}$, we visit $v
+\in \hat{J}_i$ finitely often and $v \in \hat{K}_i$ infinitely often. Hence, the
+problem of finding a policy $q$ that maximizes the probability of satisfying a
+given temporal logic specification becomes a matter of synthesizing a strategy to reach a
+state in $\mathcal{C}$ and once inside the set, the corresponding policy $q$ can be
+followed to ensure the specification will be satisfied. Given the structure of $\mathcal{M}$, the accepting end components can be computed by algorithms in \cite{BaierKatoen08}. 
+
+% \paragraph{T-step state value}
+% Let $\mathcal{M}$ be a product MDP, $C = \textrm{AEC}(\mathcal{M})$ be the set of accepting end components and $q$ be the agent's policy in $\mathcal{M}$. We define the value of a state as the probability of reaching the accepting end component in $T$ steps or less which is equivalent to satisfying the LTL specification. Formally, for each state $v\in V$, given a finite time horizon $T \in \mathbb{N}$, the $T$-step state value at $v$ for the agent is $W^q = h^{\leq T}(v,\mathcal{C})$. 
