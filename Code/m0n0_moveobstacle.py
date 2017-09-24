@@ -90,12 +90,12 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
         mu[K,0,initcoords[0],initcoords[1],gwg.coords(moveobstacles[0])[1],gwg.coords(moveobstacles[0])[0]] = 1.0 #initial distribution
         for s in gwg.states:
             if tuple(reversed(gwg.coords(s))) != targcoords:
-                psi[K,T,gwg.coords(s)[1],gwg.coords(s)[0],:,:] = np.full((gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles)),100) # Terminal cost
+                psi[K,T,gwg.coords(s)[1],gwg.coords(s)[0],:,:] = np.full((gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles)),50) # Terminal cost
         for t in range(T):
-            for s in gwg.states:
-                for s2 in gwg.states:
+            for s in obs_states:
+                for s2 in obs_states:
                     if s == s2:
-                        psi[K,t,gwg.coords(s)[1],gwg.coords(s)[0],gwg.coords(s2)[1],gwg.coords(s2)[0]] = 150 # collision cost
+                        psi[K,t,gwg.coords(s)[1],gwg.coords(s)[0],gwg.coords(s2)[1],gwg.coords(s2)[0]] = 20 # collision cost
 
     mdp._prepare_post_cache()
     mdp._prepare_pre_cache()
@@ -116,7 +116,7 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
             nu = calc_nu(K,t,mu,nu,q,qinit,gwg,obs_states) # Calculate nu
 
 
-            if plot and np.mod(K/pltiter,pltiter) == 0:
+            if plot and np.mod(K,pltiter) == 0:
                 plt.imshow(mu_states,cmap = 'hot',interpolation='nearest')
                 # plt.imshow(mu_obs,cmap = 'hot',interpolation='nearest')
                 plt.pause(0.05)
@@ -125,7 +125,7 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
             (y,x) = gwg.coords(s_final)
             mu_states[y,x] = sum(sum(mu[K,T,x,y,:,:]))
 
-        if np.mod(K/pltiter,pltiter) == 0:
+        if np.mod(K,pltiter) == 0:
             plt.imshow(mu_states,cmap = 'hot',interpolation='nearest')
             plt.pause(0.05)
 
@@ -162,6 +162,6 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
                 psi_states[y,x] = sum(sum(psi[K,t,x,y,:,:]))
                 # print 'cost at ', psi_states[7,3]
                 # print psi_states[2,3]
-            if plot and np.mod(K/pltiter,pltiter) == 0:
+            if plot and np.mod(K,pltiter) == 0:
                 plt.imshow(psi_states,cmap = 'hot',interpolation='nearest')
                 plt.pause(0.05)
