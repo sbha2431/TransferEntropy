@@ -1,12 +1,14 @@
 We now incorporate temporal logic constraints into the minimal-information control framework.
 \subsection{Temporal logic constraints}
-Consider a finite MDP $M=(\mathcal{X},\mathcal{U},p,\AP,L)$ where, as before, the state space of $M$ is split into expensive and cheap to measure state variables $\mathcal{X} = \mathcal{\bar{X}} \times \mathcal{\tilde{X}}$. We are additionally given a specification DRA $\mathcal{A} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$, and finite time horizon $T$. The product MDP is $\mathcal{M}\defeq (\mathcal{V},\mathcal{U}, \Delta,v_0,\textrm{ACC}_{\mathcal{M}})$. $\textrm{AEC}(\mathcal{M})$ are the accepting end components of $\mathcal{M}$. $\mathcal{C}$ is the set of accepting end states from $\textrm{AEC}(\mathcal{M})$.  Hence, we will have the state space $\mathcal{V} = (\mathcal{X}_e \times \mathcal{X}_f) \times S$. 
+Consider a finite MDP $M=(\mathcal{\hat{X}},\mathcal{U},p,\AP,L)$ where, as before, the state space of $M$ is split into expensive and cheap to measure state variables $\mathcal{X} = \mathcal{\bar{X}} \times \mathcal{\tilde{X}}$. We are additionally given a specification DRA $\mathcal{A} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$, and finite time horizon $T$. The product MDP is $\mathcal{M}\defeq (\mathcal{V},\mathcal{U}, \Delta,v_0,\textrm{ACC}_{\mathcal{M}})$. $\textrm{AEC}(\mathcal{M})$ are the accepting end components of $\mathcal{M}$. $\mathcal{C}$ is the set of accepting end states from $\textrm{AEC}(\mathcal{M})$.  Hence, we will have the state space $\mathcal{V} = (\mathcal{\bar{X}} \times \mathcal{\tilde{X}}) \times S$. 
 
-We define a state-action cost in the product MDP in the following way. We define a function $c(v_t,u_t,v_{t+1})$, such that for every transition from $v_t$ to $v_{t+1}$, the cost is $0$ if neither $v_t$ or $v_{t+1}$ are in $\mathcal{C}$. The cost is $-1$ if $v_t \notin \mathcal{C}$ and $v_{t+1} \in \mathcal{C}$ and no state in $\mathcal{C}$ have been visited prior to reaching $v_t$.  Intuitively, minimizing this quantity will result in a policy $q$ that maximizes the probability of reaching $\mathcal{C}$ and hence, equivalently will maximize the probability of satisfying the temporal logic specification in $M$. The expected accumulated reward from state $v_0$ given by $\sum_{t=0}^{T-1}\mathbb{E}\{c(v_t,u_t,v_{t+1})\}$ will equal the \emph{negative} of the reachability probability to the target set $C$ in $T-$steps \ie we have
+Now, for notational simplicity, we set $\mathcal{X} = \mathcal{V} = (\mathcal{\bar{X}} \times \mathcal{\tilde{X}}) \times S$, $\mathcal{\tilde{X}} = (\mathcal{\tilde{X}},\mathcal{S})$ (we assume without loss of generality that the state in the automaton is freely known), and $\mathcal{\bar{X}} = \mathcal{\bar{X}}$. Let $X = (\bar{X},\tilde{X},S)$ and $x = (\bar{x},\tilde{x},s)$ be defined similarly.
 
-\begin{align*}
-\sum_{t=0}^{T-1}\mathbb{E}\{c(v_t,u_t,v_{t+1})\} = -h^{\leq T}(x,\mathcal{C})
-\end{align*}.
+We define a state-action cost in the product MDP in the following way. We define a function $c(x_t,u_t,x_{t+1})$, such that for every transition from $x_t$ to $x_{t+1}$, the cost is $0$ if neither $x_t$ or $x_{t+1}$ are in $\mathcal{C}$. The cost is $-1$ if $x_t \notin \mathcal{C}$ and $x_{t+1} \in \mathcal{C}$ and no state in $\mathcal{C}$ have been visited prior to reaching $x_t$.  Intuitively, minimizing this quantity will result in a policy $q$ that maximizes the probability of reaching $\mathcal{C}$ and hence, equivalently will maximize the probability of satisfying the temporal logic specification in $M$. The expected accumulated reward from state $x_0$ given by $\sum_{t=0}^{T-1}\mathbb{E}\{c(x_t,u_t,x_{t+1})\}$ will equal the \emph{negative} of the reachability probability to the target set $C$ in $T-$steps \ie we have
+
+\begin{align}\label{eqn:cost}
+\sum_{t=0}^{T-1}\mathbb{E}\{c(x_t,u_t,x_{t+1})\} = -h^{\leq T}(x,\mathcal{C})
+\end{align}.
 
 % First we define a reward function $R(v_t,u_t,v_{t+1})$, such that for every transition from $v_t$ to $v_{t+1}$, the reward is $0$ if neither $v_t$ or $v_{t+1}$ are in $C$. The reward is $1$ if $v_t \notin C$ and $v_{t+1} \in C$ and no state in $C$ have been visited prior to reaching $v_t$. Put simply, maximizing this quantity will result in a policy $q$ that maximizes the probability reaching $C$ and hence, equivalently will maximize the probability of satisfying the LTL specification $\varphi$ in $M$. The expected accumulated reward from state $v_0$ given by $\sum_{t=0}^{T-1}\mathbb{E}\{R(v_t,u_t,v_{t+1})\}$ will equal the T-step state value defined earlier. However, in this paper we are interested in solving a cost minimization problem. To do this, we define a cost function $c(v_t,u_t,v_{t+1}) = -R(v_t,u_t,v_{t+1})$. Hence, our \emph{T-step state value} under a policy $q$ will be
 
@@ -22,23 +24,16 @@ We define a state-action cost in the product MDP in the following way. We define
 
 % The standard problem is to compute an optimal policy $q_t(u_t|x^t,u^{t-1})$ that minimizes the cost function as shown in equation (\ref{eqn:optpol}). We also want to minimize the rate of communication which is shown in equation (6). 
 
-In our setting, we model the information theoretic cost from $\mathcal{\bar{X}}$ using transfer entropy shown in equation (\ref{eqdi}). Thus, this leads to the following optimization problem over the state space of the product MDP:
+In our setting, we model the information theoretic cost from $\mathcal{\bar{X}}$ using transfer entropy shown in equation (\ref{eqdi}). Thus, we recover the formulation of minimal-information control MDP in \eqref{eqmainproblem} with the cost function $c$ as defined in \eqref{eqn:cost}. We will have cost functional $J(X^T,U^{T-1}) \defeq - \sum_{t=0}^{T-1}{\mathbb{E}\{c(x_t,u_t)\}}$. Note the negative sign means that $J(X^T,U^{T-1})$ is the expected reachability probability to the target set from the initial state $x_0$. Hence we solve the optimization problem in \eqref{eqmainproblem}, on the state space of the product MDP with the cost being the negative reachability to the accepting end component. 
 
-\begin{equation}\label{eqn:nonconstopt}
-\min_{\{q_t\}_{t=1}^T} J(V^{T},U^{T-1}) + \beta I_{m,n}(\bar{X}^T \rightarrow U^{T-1}||\tilde{X}^T)
-\end{equation}
-where $V = ((\bar{X},\tilde{X}),S)$ is the state space of the product MDP $\mathcal{M}$. We define $J(V^T,U^{T-1}) \defeq - \sum_{t=0}^{T-1}{\mathbb{E}\{c(v_t,u_t)\}}$. Note the negative sign means that $J(V^T,U^{T-1})$ is the expected reachability probability to the target set from the initial state $v_0$.
-
-Furthermore, noticing that $V = (\bar{X},\tilde{X},S)$ and with slight abuse of notation, setting $\tilde{X} = (\tilde{X},S)$ (we assume without loss of generality that the state in the automaton is freely known), we recover the formulation of minimal-information control MDP in \eqref{eqmainproblem} with a specially defined cost function. The only difference is that we are dealing with the product MDP state space instead of the original MDP.
-
-Notice that equation (\ref{eqn:nonconstopt}) can be seen as a \emph{Lagrangian relaxation} of the the following constrained optimization problem
+\paragraph*{Remark} Equation (\ref{eqmainproblem}) can be seen as a \emph{Lagrangian relaxation} of the the following constrained optimization problem
 \begin{align}\label{eqn:constopt}
 T_{m,n}(D) & \defeq \min_{\{q_t\}_{t=1}^T} I_{m,n}(\bar{X}^T \rightarrow U^{T-1}||\bar{X}^T) \\
-& \textrm{s.t } J(V^{T},U^{T-1}) \leq 1 - D. \nonumber
+& \textrm{s.t } J(X^{T},U^{T-1}) \leq 1 - D. \nonumber
 \end{align}
 where $0\leq D \leq 1$.
 
-Intuitively, this means that we want to minimize the information flow from the state variables in $\mathcal{\bar{X}}$ subject to the probability of failure being less than a user defined quantity $1-D$. In what follows, we present the solution procedure \eqref{eqmainproblem} in lieu of \eqref{eqn:nonconstopt} as they are equivalent problems. 
+Intuitively, this means that we want to minimize the information flow from the state variables in $\mathcal{\bar{X}}$ subject to the probability of failure being less than a user defined quantity $1-D$. 
 
 % We will prove in the following that the transfer entropy cost used is a fundamental lower bound for the minimal communication rate $R(D)$, in other words, we prove that $R(D) \geq T_{m,n}(D)$. The consequence of this is that the obtained optimal control policy $\{q_t\}_{t=1}^T$ obtained as the solution to equation ($\ref{eqn:constopt}$) is one that requires a minimal data rate to implement by the controller while still achieving a control performance of at least $D$. 
 
