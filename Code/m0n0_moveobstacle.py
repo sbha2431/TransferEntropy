@@ -4,6 +4,7 @@ __author__ = 'sudab'
 import numpy as np
 import copy
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def safe_ln(x,out):
     if x <= 0:
@@ -32,13 +33,13 @@ def calc_mu(K,t,mu,mu_states,q,qinit,gwg,mdp,obs_mdp,obs_states,mu_obs):
         for obstacle_s in obs_states:
             (y2,x2) = gwg.coords(obstacle_s)
             if K == 0:
-                mu[K,t+1,x,y,x2,y2] = sum([sum([mdp.prob_delta(s_old,u,s_new)*
+                mu[K,t+1,x,y,x2,y2] = sum([mdp.prob_delta(s_old,u,s_new)*
                                        obs_mdp.prob_delta(obstacle_s_old,u_obs,obstacle_s)*
                                        qinit[gwg.coords(s_old)[1],gwg.coords(s_old)[0],gwg.coords(obstacle_s_old)[1],gwg.coords(obstacle_s_old)[0],u]*
                                        mu[K,t,gwg.coords(s_old)[1],gwg.coords(s_old)[0],gwg.coords(obstacle_s_old)[1],gwg.coords(obstacle_s_old)[0]]
                                        for u in range(gwg.nactions)
                                        for (s_old,uq) in mdp.pre(s_new) if s_new in mdp.post(s_old,u)
-                                        for (obstacle_s_old,u_obs) in obs_mdp.pre(obstacle_s)])])
+                                        for (obstacle_s_old,u_obs) in obs_mdp.pre(obstacle_s)])
             else:
                 mu[K,t+1,x,y,x2,y2] = sum([mdp.prob_delta(s_old,u,s_new)*
                                         obs_mdp.prob_delta(obstacle_s_old,u_obs,obstacle_s)*
@@ -49,6 +50,7 @@ def calc_mu(K,t,mu,mu_states,q,qinit,gwg,mdp,obs_mdp,obs_states,mu_obs):
                                        for (obstacle_s_old,u_obs) in obs_mdp.pre(obstacle_s)])
             mu_obs[y2,x2] = sum(sum(mu[K,t,:,:,x2,y2]))
         mu_states[y,x] = sum(sum(mu[K,t,x,y,:,:]))
+    # mu_states = safe_div(mu_states,sum(sum(mu_states)),0.0)
     return mu,mu_states,mu_obs
 
 def calc_nu(K,t,mu,nu,q,qinit,gwg,obstacle_states):
@@ -78,19 +80,27 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
     initcoords = tuple(reversed(gwg.coords(gwg.current[0])))
     targcoords = tuple(reversed(gwg.coords(gwg.targets[0][0])))
     # Define variables
-    mu = np.full((iter,T+1,gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles)),0.0)
+    mu = np.full((iter,T+1,gwg.ncols,gwg.nrows,gwg.ncols,gwg.nrows),0.0)
     nu = np.full((iter,T,gwg.ncols,gwg.nrows,gwg.nactions),0.0)
-    rho = np.full((iter,T,gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles),gwg.nactions),0.0)
-    psi = np.full((iter,T+1, gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles)),0.0)  #-log(phi)
-    q = np.full((iter,T,gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles),gwg.nactions),0.0)
+    rho = np.full((iter,T,gwg.ncols,gwg.nrows,gwg.ncols,gwg.nrows,gwg.nactions),0.0)
+    psi = np.full((iter,T+1, gwg.ncols,gwg.nrows,gwg.ncols,gwg.nrows),0.0)  #-log(phi)
+    q = np.full((iter,T,gwg.ncols,gwg.nrows,gwg.ncols,gwg.nrows,gwg.nactions),0.0)
+    labels = np.chararray((gwg.nrows,gwg.ncols))
+    for s in gwg.obstacles:
+        (y, x) = gwg.coords(s)
+        labels[y,x] = 'O'
+    for s in gwg.targets[0]:
+        (y, x) = gwg.coords(s)
+        labels[y,x] = 'G'
+
 
     # Initialize variables
-    qinit = np.full((gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles),gwg.nactions),1.0/gwg.nactions)
+    qinit = np.full((gwg.ncols,gwg.nrows,gwg.ncols,gwg.nrows,gwg.nactions),1.0/gwg.nactions)
     for K in range(iter):
         mu[K,0,initcoords[0],initcoords[1],gwg.coords(moveobstacles[0])[1],gwg.coords(moveobstacles[0])[0]] = 1.0 #initial distribution
         for s in gwg.states:
             if tuple(reversed(gwg.coords(s))) != targcoords:
-                psi[K,T,gwg.coords(s)[1],gwg.coords(s)[0],:,:] = np.full((gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles)),50) # Terminal cost
+                psi[K,T,gwg.coords(s)[1],gwg.coords(s)[0],:,:] = np.full((gwg.ncols,gwg.nrows),50) # Terminal cost
         for t in range(T):
             for s in obs_states:
                 for s2 in obs_states:
@@ -103,6 +113,7 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
     obs_mdp._prepare_post_cache()
 
     plt.ion()
+    # fix,axs = plt.subplots(2,2,figsize = (10,10))
     for K in range(iter):
         print 'At iteration ', K+1, '/', iter
         # Forward path
@@ -117,7 +128,14 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
 
 
             if plot and np.mod(K,pltiter) == 0:
-                plt.imshow(mu_states,cmap = 'hot',interpolation='nearest')
+                axcb=plt.subplot(222)
+                ax = plt.subplot(221)
+                ax = sns.heatmap(mu_states, vmax=1.0,vmin=0.0, annot=False, linewidths=1,linecolor='black',ax=ax, cbar=True,cbar_ax=axcb, cmap="YlGnBu")
+                ax.set_title('t = {}'.format(t))
+                # plt.subplot(221)
+                # plt.imshow(mu_states,cmap = 'hot',interpolation='nearest')
+                # plt.subplot(222)
+                # plt.colorbar()
                 # plt.imshow(mu_obs,cmap = 'hot',interpolation='nearest')
                 plt.pause(0.05)
 
@@ -125,9 +143,9 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
             (y,x) = gwg.coords(s_final)
             mu_states[y,x] = sum(sum(mu[K,T,x,y,:,:]))
 
-        if np.mod(K,pltiter) == 0:
-            plt.imshow(mu_states,cmap = 'hot',interpolation='nearest')
-            plt.pause(0.05)
+        # if np.mod(K,pltiter) == 0:
+        #     plt.imshow(mu_states,cmap = 'hot',interpolation='nearest')
+        #     plt.pause(0.05)
 
         # Backward path
         print 'Backward path:'
@@ -163,5 +181,8 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
                 # print 'cost at ', psi_states[7,3]
                 # print psi_states[2,3]
             if plot and np.mod(K,pltiter) == 0:
-                plt.imshow(psi_states,cmap = 'hot',interpolation='nearest')
+                axcb = plt.subplot(224)
+                ax = plt.subplot(223)
+                sns.heatmap(psi_states,linewidths=1,linecolor='white',cbar=True,ax=ax,cbar_ax=axcb, cmap="YlGnBu")
+                # plt.imshow(psi_states,cmap = 'hot',interpolation='nearest')
                 plt.pause(0.05)

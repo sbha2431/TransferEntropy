@@ -76,7 +76,7 @@ for s in states:
 obstacle_mdp = MDP(states, accepting_states, alphabet, transitions)
 
 
-T = 60
+T = 65
 beta = 10/2.0
 # cost = np.full((gwg.nactions),1.0)
 cost = np.full((gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles),gwg.nactions),0)

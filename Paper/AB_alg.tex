@@ -1,3 +1,5 @@
-The optimality conditions derived in the previous section is a set of coupled non-linear equations with respect to the variables $\mu^{*},\nu^*,\rho^*,\phi^*,q^*$. In order to solve these we propose a numeric forward-backward algorithm. Firstly, note that if $\rho^*,\phi^*,q^*$ are known, $\mu^{*},\nu^*$ can be solved forwards in time. 
+The optimality conditions derived in the previous section is a set of coupled non-linear equations with respect to the variables $\mu^{*},\nu^*,\rho^*,\phi^*,q^*$. In order to solve these we propose a numeric forward-backward algorithm. Firstly, note that if $\rho^*,\phi^*,q^*$ are known, $\mu^{*},\nu^*$ can be solved forwards in time. Similarly, if $\mu^{*},\nu^*$ are known then the others can be solved backwards in time. 
 
-We refer the reader to \cite{takashi17} for more details on convergence results of the algorithm. 
+To solve this, we do the following. First we make a guess for each of the variables. We then solve the forward-time equations for $\mu^{*},\nu^*$. We use these values to then solve for $\rho^*,\phi^*,q^*$ backwards in time. This process is repeated until convergence. 
+
+We refer the reader to \cite{takashi17} for more details on the convergence results of the algorithm. We note that this is a modified version of the Arimoto-Blahut algorithm proposed in \cite{Naiss13}
