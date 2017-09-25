@@ -11,14 +11,25 @@ J(X^T, U^{T-1})=\sum_{t=0}^{T-1}\mathbb{E}\{c_t(x_t, u_t, x_{t+1})\}.
 Suppose that the state space of $M$ is split into the space $\bar{\mathcal{X}}$ of ``expensive to observe'' state variables and the space $\tilde{\mathcal{X}}$ of ``free'' state variables as $\mathcal{X}=\bar{\mathcal{X}}\times \tilde{\mathcal{X}}$.
 At every time step, observing a realization of the ``free'' component $\tilde{X}_t$ of the state random variable $X_t=(\bar{X}_t, \tilde{X}_t)$ is free of charge, whereas observing the ``expensive'' component $\bar{X}_t$ incurs cost. 
 
-As a motivating scenario, imagine the MDP models a Mars rover. The value of $x_e$ is measured by an orbiter while $x_f$ is sensed using on-board sensors. Since the orbiter will only be able to communicate with the rover during part of its orbit, we will want to penalize the reliance on this information in the policy synthesis process. To do this we introduce some information-theoretic terms. 
+As a motivating scenario, imagine the MDP models a Mars rover. The value of $\bar{x}$ is measured by an orbiter while $\tilde{x}$ is sensed using on-board sensors. Since the orbiter will only be able to communicate with the rover during part of its orbit, we will want to penalize the reliance on this information in the policy synthesis process. To do this we introduce some information-theoretic terms. 
 
-We assume that the observation cost over the time horizon $0\leq t\leq T-1$ is proportional to the \emph{causally conditioned directed information}
+Let $\tilde{X} \in \mathcal{\tilde{X}}$, $\bar{X} \in \mathcal{\bar{X}}$, $U\in \mathcal{U}$ be random variables of which $\tilde{x},\bar{x},u$ are realizations. The \emph{conditional mutual information} is given by 
+
+\begin{align*}
+I  (\bar{X}^t;U_t & \vert U^{t-1},\tilde{X}^{t}) \defeq \nonumber \\ &\mathbb{E}_{U^T,\bar{X}^T,\tilde{X}^T}\bigg\{\log\frac{\mu_{t}(U_t|\bar{X}^{t},U^{t-1},\tilde{X}^t)}{\mu_{t}(U_t\vert U^{t-1}, \tilde{X})^t}\bigg\}.
+\end{align*}
+where for each $t=0,1, ..., T-1$, $\mu_t(x^t, u^{t-1})$ is the joint distribution defined recursively by the state transition probability $p_t(x_{t+1}|x_t, u_t)$ and a decision policy $q_t(u_t|x^t, u^{t-1})$ as
+\[
+\mu_{t+1}(x^{t+1}, u^t)=p_t(x_{t+1}|x_t, u_t)q_t(u_t|x^t, u^{t-1})\mu_t(x^t, u^{t-1}).
+\]
+
+
+We assume that the observation cost over the time horizon $0\leq t\leq T-1$ is proportional to the transfer entropy or \emph{causally conditioned directed information}
 \begin{equation}
 \label{eqdi}
 I(\bar{X}^{T-1}\rightarrow U^{T-1}\| \tilde{X}^{T-1})=\sum_{t=0}^{T-1} I(\bar{X}^t; U_t|U^{t-1},\tilde{X}^t).
 \end{equation}
-We note that the notion of \emph{directed information} is introduced by [Massey] based on [Marko], and its generalization with causal conditioning by [Kramer]. Intuitively, \eqref{eqdi} can be understood as the information flow from a random process $\{\bar{X}_t\}$ to $\{U_t\}$ given $\{\tilde{X}_t\}$ as side information.
+We note that the notion of \emph{directed information} is introduced by \cite{massey1990causality} based on \cite{marko1973bidirectional}, and its generalization with causal conditioning by \cite{kramer1998causal}. Intuitively, \eqref{eqdi} can be understood as the information flow from a random process $\{\bar{X}_t\}$ to $\{U_t\}$ given $\{\tilde{X}_t\}$ as side information.
 The main problem we study in this paper is
 \begin{align}
 \min_{\{q_t(u_t|x^t,u^{t-1})\}_{t=0}^{T-1}} & J(X^T, U^{T-1}) \nonumber \\
@@ -26,27 +37,8 @@ The main problem we study in this paper is
 \end{align}
 where $\beta>0$ is a given constant.
 
-A communication-theoretic meaning of the optimization problem \eqref{eqmainproblem} can be given by considering a feedback control architecture shown in Figure []. 
-At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the controller, while the expensive component $\bar{X}_t$ is only available at a remote sensor. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. Codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$. 
-
-
-
-Assuming that transmitting data over the communication channel incurs unit cost $\beta$ per \emph{bit}, consider the following communication design problem
-\begin{equation}
-\min_{\{\mathcal{W}_t, p_t(w_t|\bar{x}^t, w^{t-1}), p_t(u_t|\tilde{x}^t, w^t, u^{t-1}) \}_{t=0}^{T-1}}  J(X^T, U^{T-1}) +\beta R \label{eqcommproblem}
-\end{equation}
-where $R=\sum_{t=0}^{T-1}R_t$ is the total amount of data. 
-The next result shows that \eqref{eqdi} provides a lower bound to $R$.
-\begin{theorem}
-Suppose that the plant dynamics is given by an MDP $M$. For any choice of the codebook $\mathcal{W}_t$, sensor policy $p_t(w_t|\bar{x}^t, w^{t-1})$ and controller policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$ for $0\leq t\leq T-1$ in Figure [], we have
-\[
-R \geq I(\bar{X}^{T-1}\rightarrow U^{T-1}\| \tilde{X}^{T-1}).
-\]
-\end{theorem}
-\begin{proof}
-Appendix.
-\end{proof}
-
+A communication-theoretic meaning of the optimization problem \eqref{eqmainproblem} can be given by considering a feedback control architecture shown in Figure \ref{fig:NCS}. 
+At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the controller, while the expensive component $\bar{X}_t$ is only available at a remote sensor. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. Codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$. The transfer entropy cost in \eqref{eqdi} can be used to model the \emph{communication rate}. In section \ref{sec:ab}, we present a formal proof showing that \eqref{eqdi} provides a lower bound to the communication rate to justify its use in our problem formulation.
 
 %Consider the control system architecture shown in Figure \ref{fig:NCS} modeled by a finite state discrete-time MDP. The state space $\mathcal{X}$ is composed of the product of two sets  $\mathcal{X} = \mathcal{X}_e \times \mathcal{X}_f$. Hence, each state in the state space $x \in \mathcal{X}$ is partitioned into two state variables $x = (x_e,x_f)$. Recall that a policy is a conditional policy distribution given by $q(u_t|x^t,u^{t-1})$. We can write this now as $q(u_t|x_e^t,x_f^t,u^{t-1})$. We allow the policy synthesizer full access to the value of $x_f$, but we restrict access to the value of $x_e$. 
 
@@ -104,20 +96,20 @@ Appendix.
     % calculate the coordinate u. We need it to place the measurement block. 
     \node [output, right of=dynamics] (output) {};
     \node [sblock, below of=dynamics,text width = 1cm] (xc) {\textbf{Sensor}\\ \textit{Costly}};
-    \node [sblock, left of=xc] (encoder) {encoder};
+    \node [sblock, left of=xc] (encoder) {\textbf{Encoder}};
 	\node [sblock, below of=xc,node distance = 1.5cm, text width = 1cm] (xf) {\textbf{Sensor}\\\textit{Free}};
-	\node [sblock, left of=encoder,node distance = 2cm] (decoder) {decoder};
+	\node [sblock, left of=encoder,node distance = 2cm] (decoder) {\textbf{Decoder}};
     % Once the nodes are placed, connecting them is easy. 
     \draw [draw,->] (input) -- node {} (sum);
-    \draw [->] (sum) -- node {$X$} (controller);
-    \draw [->] (controller) -- node {$u$} (dynamics);
-    \draw [->] (dynamics) -- node [name=y] {$y$}(output);
+    \draw [->] (sum) -- node {$X_t$} (controller);
+    \draw [->] (controller) -- node {$u_t$} (dynamics);
+    \draw [->] (dynamics) -- node [name=y] {$X_{t+1}$}(output);
     \draw [->] (y) |- (xc);
-    \draw [->] (xc) -- node {$\bar{X}$} (encoder);
+    \draw [->] (xc) -- node {$\bar{X}_t$} (encoder);
     \draw [->] (y) |-  (xf);
     \draw [->] (encoder) -- node {$W$} (decoder);
-     \draw [->] (decoder) -| node {$(\tilde{X},\bar{X})$} (sum);
-    \draw [->] (xf) -| node {$\tilde{X}$}(sum);
-\end{tikzpicture}\caption{Control system architecture where $x_e$ is sensed remotely and has to be transmitted to the controller through an encoder-decoder system.}\label{fig:NCS}
+     \draw [->] (decoder) -| node {$(\bar{X}_t,\tilde{X}_t)$} (sum);
+    \draw [->] (xf) -| node {$\tilde{X}_t$}(sum);
+\end{tikzpicture}\caption{Control system architecture where $\bar{X}_t$ is sensed remotely and has to be transmitted to the controller through an encoder-decoder system.}\label{fig:NCS}
 
 \end{figure}

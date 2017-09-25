@@ -1,7 +1,7 @@
 \subsection{Moving obstacle}
-We look at a motion planning problem shown in figure \ref{fig:exp1} where the agent is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. This is expressed in temporal logic as \emph{always avoid} 'crash' and \emph{infinitely often} go to 'goal'. Where the atomic proposition 'crash' is true in the red static obstacles and when the state of the agent is the same as the state of the moving obstacle. The atomic proposition 'goal' is true in teh green cell.
+We look at a motion planning problem shown in figure \ref{fig:exp1} where the agent is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. This is expressed in temporal logic as \emph{always avoid} 'crash' and \emph{infinitely often} go to 'goal'. Where the atomic proposition 'crash' is true in the red static obstacles or when the state of the agent is the same as the state of the moving obstacle. The atomic proposition 'goal' is true in the green cell. The DRA representation is shown in Figure \ref{fig:dra}.
 \begin{figure}
-\centering
+\subfloat[Gridworld with moving obstacle \label{fig:exp1}]{
 \begin{tikzpicture}[scale=1.2]
 \draw[step=0.5cm,color=gray] (-1.5,-2.5) grid (1,1);
 \filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
@@ -47,12 +47,27 @@ We look at a motion planning problem shown in figure \ref{fig:exp1} where the ag
 \node at (0.25,-2.25) {\tiny{33}};
 \node at (0.75,-2.25) {\tiny{34}};
 \end{tikzpicture}
-\caption{Gridworld where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:exp1}
+}
+\subfloat[Specification DRA\label{fig:dra}]{
+	\begin{tikzpicture}[shorten >=1pt,node distance=1.6cm,on grid]
+	\node[state,initial]   (q_0)                {$s_0$};
+	\node[state,accepting]           (q_1) [right=of q_0] {$s_1$};
+	\node[state] (q_2) [below=of q_1] {$s_2$};
+	\path[->] (q_0) edge                node [above] {\small Goal} (q_1)
+	edge [loop above]   node         {} ()
+	%edge [bend left=45] node [below] {1} (q_2)
+	edge [bend right]   node [left] {\small Crash} (q_2)
+	(q_1) edge                node [right] {\small Crash} (q_2)
+	edge [loop above]         node {} (q_1)
+	(q_2) edge [loop below]   node {} (q_2);
+	\end{tikzpicture}
+}
+\caption{Gridworld and DRA  with $(J,K) = (s_2,s_1)$ depicting a scenario where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:exp2}
 \end{figure}
 
-The state space of the agent is $(x,y,x_{obs},y_{obs})$ where the last two coordinates form the position of the moving obstacle. We assume that the state of the moving obstacle to be expensive to observe. Intuitively we expect to see if that we set the $\beta$ parameter high, \ie if the cost of information is high, the agent will go the long way around the wall as it will be too expensive to observe the moving obstacle. Howver, if the agent knows the position of the moving obstacle at all times, it can easily plan to avoid collision, and hence for low $\beta$, we expect to see the agent go through shorter route. 
+The state space of the agent is $(x,y,x_{obs},y_{obs})$ where $(x_{obs},y_{obs})$ form the position of the moving obstacle. We assume that the state of the moving obstacle to be expensive to observe. Formally, we let $\mathcal{\tilde{X}} = (x,y)$ and $\mathcal{\bar{X}} = (x_{obs},y_{obs})$. 
 
-We use a time horizon $T = 25$ and test for $\beta = 0.5$ and $\beta=5$
+ Intuitively we expect to see if that we set the $\beta$ parameter high, \ie if the cost of information is high, the agent will go the long way around the wall as it will be too expensive to observe the moving obstacle. Howver, if the agent knows the position of the moving obstacle at all times, it can easily plan to avoid collision, and hence for low $\beta$, we expect to see the agent go through shorter route. We use a time horizon $T = 25$ and test for $\beta = 0.5$ and $\beta=5$
 
 \begin{figure}
 	\subfloat[$\beta = 0.5$\label{simple-grid}]{

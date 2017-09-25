@@ -1,36 +1,52 @@
-In this section we present a physical intepretation of the use of transfer entropy in this problem formulation in the case of a networked control problem. We will prove the rate of communication $R(D)$ will be lower bounded by the directed information. We first prove the following lemma.
-\begin{lemma}
-\begin{align}
-I(X_1^T \rightarrow U^T || X_2^T) \leq I(X_1^T \rightarrow W^T || U^{T-1},X_2^T)
-\end{align}
-\end{lemma}
-\begin{proof}
-\begin{align*}
-0 &\leq I(X_1^T \rightarrow U^T || X_2^T) - I(X_1^T \rightarrow W^T || U^{T-1},X_2^T) \\
-& = \sum_{t=1}^T I\left(X_1^t;W_t|W^{t-1},U^{t-1},X_2^t \right) - I\left(X_1^t;U_t|U^{t-1},X_2^t \right)\\
-& = \sum_{t=1}^T I\left(X_1^t;W_t,U_t|W^{t-1},U^{t-1},X_2^t \right) \\&- I\left(X_1^t;U_t|U^{t-1},X_2^t \right)\\
-& = \sum_{t=1}^T I\left(X_1^t;W_t|U^{t},X_2^t \right) - I\left(X_1^t;W^{t-1}|U^{t-1},X_2^t \right)\\
-& = \sum_{t=1}^T I\left(X_1^t;W_t|U^{t},X_2^t \right) - I\left(X_1^{t-1};W^{t-1}|U^{t-1},X_2^{t-1} \right)\\
-& = I\left(X_2^T;W^T | U^T,X_1^T \right) \geq 0 
-\end{align*}
-\end{proof}
-The third line follows from the fact 
-\begin{align*}
- I & \left(X_1^t;W_t,U_t| W^{t-1},U^{t-1}, X_2^t \right) =  \\ & I\left(X_1^t;W_t|W^{t-1},U^{t-1},X_2^t \right) + I\left(X_1^t;U_t|W^{t},U^{t-1},X_2^t \right) = \\ & I\left(X_1^t;W_t|W^{t-1},U^{t-1},X_2^t \right)
-\end{align*}
-The next line follows from using the chain rule. 
-
-We now present one of the main results of the paper. 
+Consider Figure \ref{fig:NCS}. Assume that transmitting data for $\bar{X}$ over the communication channel incurs unit cost $\beta$ per \emph{bit}, and now consider the following communication design problem
+\begin{equation}
+\min_{\{\mathcal{W}_t, p_t(w_t|\bar{x}^t, w^{t-1}), p_t(u_t|\tilde{x}^t, w^t, u^{t-1}) \}_{t=0}^{T-1}}  J(X^T, U^{T-1}) +\beta R \label{eqcommproblem}
+\end{equation}
+where $R=\sum_{t=0}^{T-1}R_t$ is the total amount of data. 
+The next result shows that \eqref{eqdi} provides a lower bound to $R$.
 \begin{theorem}
-$R(D) \geq I(X_1^T \rightarrow U^T || X_2^T)$
+	Suppose that the plant dynamics is given by an MDP $M$. For any choice of the codebook $\mathcal{W}_t$, sensor policy $p_t(w_t|\bar{x}^t, w^{t-1})$ and controller policy $q_t(u_t|\tilde{x}^t, w^t, u^{t-1})$ for $0\leq t\leq T-1$ in Figure \ref{fig:NCS}, we have
+	\[
+	R \geq I(\bar{X}^{T-1}\rightarrow U^{T-1}\| \tilde{X}^{T-1}).
+	\]
 \end{theorem}
-
 \begin{proof}
-\begin{align*}
-\sum_{t=1}^T R_t &\geq \sum_{t=1}^T H(W_t)\\
-&\geq \sum_{t=1}^T H(W_t\vert W^{t-1},U^{t-1},X_2^t)\\
-&\geq \sum_{t=1}^T H(W_t\vert W^{t-1},U^{t-1},X_2^t) - H(W_t\vert X_1^t, W^{t-1},U^{t-1},X_2^t)\\
-& =  \sum_{t=1}^T I \left(X_2^T \rightarrow W^T \vert \vert U^{T-1},X_2^{T} \right)\\
-& \geq I \left(X_1^T \rightarrow U^T \vert \vert X_2^T \right)
-\end{align*}
+	Appendix.
 \end{proof}
+
+%In this section we present a physical intepretation of the use of transfer entropy in this problem formulation in the case of a networked control problem. We will prove the rate of communication $R(D)$ will be lower bounded by the directed information. We first prove the following lemma.
+%\begin{lemma}
+%\begin{align}
+%I(X_1^T \rightarrow U^T || X_2^T) \leq I(X_1^T \rightarrow W^T || U^{T-1},X_2^T)
+%\end{align}
+%\end{lemma}
+%\begin{proof}
+%\begin{align*}
+%0 &\leq I(X_1^T \rightarrow U^T || X_2^T) - I(X_1^T \rightarrow W^T || U^{T-1},X_2^T) \\
+%& = \sum_{t=1}^T I\left(X_1^t;W_t|W^{t-1},U^{t-1},X_2^t \right) - I\left(X_1^t;U_t|U^{t-1},X_2^t \right)\\
+%& = \sum_{t=1}^T I\left(X_1^t;W_t,U_t|W^{t-1},U^{t-1},X_2^t \right) \\&- I\left(X_1^t;U_t|U^{t-1},X_2^t \right)\\
+%& = \sum_{t=1}^T I\left(X_1^t;W_t|U^{t},X_2^t \right) - I\left(X_1^t;W^{t-1}|U^{t-1},X_2^t \right)\\
+%& = \sum_{t=1}^T I\left(X_1^t;W_t|U^{t},X_2^t \right) - I\left(X_1^{t-1};W^{t-1}|U^{t-1},X_2^{t-1} \right)\\
+%& = I\left(X_2^T;W^T | U^T,X_1^T \right) \geq 0 
+%\end{align*}
+%\end{proof}
+%The third line follows from the fact 
+%\begin{align*}
+% I & \left(X_1^t;W_t,U_t| W^{t-1},U^{t-1}, X_2^t \right) =  \\ & I\left(X_1^t;W_t|W^{t-1},U^{t-1},X_2^t \right) + I\left(X_1^t;U_t|W^{t},U^{t-1},X_2^t \right) = \\ & I\left(X_1^t;W_t|W^{t-1},U^{t-1},X_2^t \right)
+%\end{align*}
+%The next line follows from using the chain rule. 
+%
+%We now present one of the main results of the paper. 
+%\begin{theorem}
+%$R(D) \geq I(X_1^T \rightarrow U^T || X_2^T)$
+%\end{theorem}
+%
+%\begin{proof}
+%\begin{align*}
+%\sum_{t=1}^T R_t &\geq \sum_{t=1}^T H(W_t)\\
+%&\geq \sum_{t=1}^T H(W_t\vert W^{t-1},U^{t-1},X_2^t)\\
+%&\geq \sum_{t=1}^T H(W_t\vert W^{t-1},U^{t-1},X_2^t) - H(W_t\vert X_1^t, W^{t-1},U^{t-1},X_2^t)\\
+%& =  \sum_{t=1}^T I \left(X_2^T \rightarrow W^T \vert \vert U^{T-1},X_2^{T} \right)\\
+%& \geq I \left(X_1^T \rightarrow U^T \vert \vert X_2^T \right)
+%\end{align*}
+%\end{proof}

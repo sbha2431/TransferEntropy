@@ -8,6 +8,7 @@
 \overrideIEEEmargins                                      % Needed to meet printer requirements.
 
 %\renewcommand{\baselinestretch}{2}
+\pdfminorversion=4
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 
@@ -50,7 +51,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the (weighted) sum of the information cost and the cost of failing to satisfy the specification. We provide a method to minimize the transfer entropy from the specified state variables to the controller such that a user specified minimum probability of success is reached. We formulate the problem as solving for an optimal policy in a continuous-state MDP. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present some numerical experiments involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
+We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the (weighted) sum of the information cost and the cost of failing to satisfy the specification. We provide a method to minimize the transfer entropy from the specified state variables to the controller such that a user specified minimum probability of success is reached. We formulate the problem as solving for an optimal policy in a continuous-state MDP. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,23 +88,23 @@ set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_
 
 
 \section{Optimality conditions}
-\input{opt_cond}
+\input{opt_cond_tak}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Arimoto-Blahut algorithm}
+\subsection{Arimoto-Blahut algorithm}
 \input{AB_alg}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Communication rate}
+\section{Communication rate}\label{sec:ab}
 \input{comm_rate.tex}
 
 
-\section{Case studies}
+\section{Case study}
 \input{case_study}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\section{Conclusion}
 
 
 \bibliographystyle{IEEEtran}

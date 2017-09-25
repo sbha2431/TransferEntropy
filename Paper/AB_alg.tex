@@ -2,4 +2,6 @@ The optimality conditions derived in the previous section is a set of coupled no
 
 To solve this, we do the following. First we make a guess for each of the variables. We then solve the forward-time equations for $\mu^{*},\nu^*$. We use these values to then solve for $\rho^*,\phi^*,q^*$ backwards in time. This process is repeated until convergence. 
 
-We refer the reader to \cite{takashi17} for more details on the convergence results of the algorithm. We note that this is a modified version of the Arimoto-Blahut algorithm proposed in \cite{Naiss13}
+\paragraph*{Remark} We note that the problem formulation and derived equations are infinite-history, \ie they depend on the state and control actions from $t=0$ to $t=T$. In order to make this computationally tractable to solve, we impose a $(m,n)$-finite-memory restriction. Given an $(m,n)$ input, at time $t$, we consider policies $q_t^*(u_t|x^t_{t-m},u^{t-1}_{t-n})$. 
+
+We note that this is a modified version of the Arimoto-Blahut algorithm proposed in \cite{Naiss13}. We refer the reader to \cite{takashi17} for more details on the convergence results of the algorithm. 
