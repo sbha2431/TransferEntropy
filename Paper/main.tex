@@ -51,7 +51,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the (weighted) sum of the information cost and the cost of failing to satisfy the specification. We provide a method to minimize the transfer entropy from the specified state variables to the controller such that a user specified minimum probability of success is reached. We formulate the problem as solving for an optimal policy in a continuous-state MDP. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
+We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the weighted sum of the information cost and the cost of failing to satisfy the specification. We provide a method to minimize the transfer entropy from the specified state variables to the controller such that a user specified minimum probability of success is reached. We formulate the problem as solving for an optimal policy in a continuous-state MDP. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,13 +107,14 @@ set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_
 \section{Conclusion and future work}
 In this paper, we integrated temporal logic constraints into a minimal-information MDP problem. We aim to extend this work to a multiple coordinating agent formulation as this problem setting naturally lends itself to minimizing communication between agents who are trying to satisfy a joint specification. 
 
-\appendices
 
-\section{Proof of Theorem 5.1}
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,main}
 
+\appendices
 
+\section{Proof of Theorem 5.1} \label{sec:prf}
+\input{app1}
 
 \end{document}

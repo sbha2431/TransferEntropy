@@ -9,7 +9,7 @@
 \paragraph*{Labeled Markov decision process (MDP)} Consider a set $\AP$ of \emph{atomic propositions} which can be used, for example, to mark a state as being a ``faulty configuration'' (reaching it is, thus, undesirable). A \emph{labeled MDP} is an MDP whose states are labeled with atomic propositions. More formally, it is a tuple $M=(\mathcal{X},\mathcal{U},p,\AP,L)$ where $\mathcal{X}$ is a
 	finite set of \emph{states},
 	$\mathcal{U}$ is a finite alphabet of \emph{actions},
-	$p: S\times\mathcal{U} \to \mathcal{D}({\mathcal{X}})$ is a (partial) \emph{probabilistic
+	$p: \mathcal{X}\times\mathcal{U} \to \mathcal{D}({\mathcal{X}})$ is a \emph{probabilistic
 	transition function} that assigns, to a state $x\in \mathcal{X}$ and an action $u \in
 	\mathcal{U}$, a probability distribution over the successor states. We
 	abbreviate $p(x_{t},u)(x_{t+1})$ by $p(x_{t+1}|x_t,u_t)$.

@@ -35,11 +35,9 @@ with the terminal condition
 \[
 V_T(\mu_T(x^T, u^{T-1}))=\mathbb{E}^{\mu_T} c_T(X_T).
 \]
-\begin{lemma}
-For each $t=0, 1, ... , T$, there exists a function $\phi_t(\cdot)$ such that
-$
-V_t(\mu_t(x^t, u^{t-1}))=\mathbb{E}^{\mu_t}\{-\log \phi_t(X_t, U^{t-1})\}.
-$
+\begin{lemma}\label{lemvalue}
+For each $t=0, 1, \cdots , T$, there exists a function $\phi_t(\cdot)$ such that
+$V_t(\mu_t(x^t, u^{t-1}))=\mathbb{E}^{\mu_t}\{-\log \phi_t(X_t, U^{t-1})\}$.
 \end{lemma}
 \begin{proof}
 Proof by induction. If $t=T$, the claim holds by choosing $\phi_T(x_T, u^{T-1})=\exp\{-c_T(x_T)\}$.
@@ -87,3 +85,6 @@ q_t^*(u_t|x^t, u^{t-1})=&\frac{\nu_t^*(u_t|\tilde{x}^t, u^{t-1})\exp\{-\rho_t^*(
 \end{align*}
 for each $t=0, 1, ..., T-1$ with the initial condition $\mu_0(x_0)=p_0(x_0)$ and the terminal condition $\phi_T(x_T, u^{T-1})=\exp\{-c_T(x_T)\}$. Then $\{q_t^*\}_{t=0}^{T-1}$ is the optimal solution to \eqref{eqmainproblem}.
 \end{theorem}
+\begin{proof}
+	Suppose $(\mu^*, \nu^*, \rho^*, \phi^*, q^*)$ satisfy the above set of equations. Then, from the argument in the proof of Lemma~\ref{lemvalue}, the sequence of strategies $\{q_t^*\}_{t=0}^{T-1}$ solves Bellman equation \eqref{eqbellman} along the trajectory  $\{\mu_t^*\}_{t=0}^{T-1}$. Thus $\{q_t^*\}_{t=0}^{T-1}$ is an optimal solution to \eqref{eqmainproblem}.
+\end{proof}
