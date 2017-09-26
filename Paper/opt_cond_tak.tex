@@ -1,0 +1,89 @@
+\subsection{Single stage problem}
+Now, given the optimization problem in equation (\ref{eqmainproblem}), we derive sufficient conditions for optimality for the policy $q_t(u_t|x^t,u^{t-1})$. First, we look at a generalized version of the problem for a single time step. We use that to set up a backwards dynamic programming problem where the generalized version is solved at each step.
+
+\label{secsinglestage}
+Let $X, U, Z$ be random variables taking values from sets $\mathcal{X}, \mathcal{U}, \mathcal{Z}$.
+Let $c:\mathcal{X}\times \mathcal{U}\times \mathcal{Z}\rightarrow \mathbb{R}$ be a given function. 
+Assume a joint distribution $p(x,z)$ is given.
+Then the optimal solution $q^*(u|x, z)$ to a convex optimization problem
+\[
+\min_{q(u|x,z)} \mathbb{E}c(X,U,Z)+I(X;U|Z)
+\]
+is given by \cite{petersen2012robust}
+\begin{align*}
+q^*(u|x,z)&=\frac{\nu^*(u|z)\exp\{-c(x,u,z)\}}{\phi^*(x,z)} \\
+\phi^*(x,z)&=\sum_{\mathcal{U}} \nu^*(u|z)\exp\{-c(x,u,z)\} \\
+\nu^*(u|z)&=\sum_{\mathcal{X}} p(x|z)q^*(u|x,z).
+\end{align*}
+Moreover, the optimal value is $\mathbb{E}^{p(x,z)}\{-\log \phi^*(X,Z)\}$.
+
+\subsection{Dynamic programming}
+In what follows, we present the solution procedure \eqref{eqmainproblem} on a product MDP. Hence, we denote $\tilde{X} = (\tilde{X},S)$ and $\bar{X} = \bar{X}$. 
+
+We assume the initial condition $\mu_0(x_0)=p_0(x_0)$ of the Markovian dynamics is given. In this subsection, we solve the optimization problem \eqref{eqmainproblem} using dynamic programming. In what follows, we assume $\beta=1$ without loss of generality. For each $t=0, 1, ... , T-1$, introduce the value function
+\begin{align*}
+&V_t(\mu_t(x^t, u^{t-1})):= \\
+& \min_{\{q_k\}_{k=t}^{T-1}} \sum_{k=t}^{T-1} \mathbb{E}c_t(X_t, U_t, X_{t+1})+I(\bar{X}^t; U_t|U^{t-1}, \tilde{X}^t).
+\end{align*}
+The value function must satisfy the Bellman equation
+\begin{align}
+&V_t(\mu_t(x^t, u^{t-1}))= \nonumber \\
+&\min_{q_t} \Bigl\{ \mathbb{E}c_t(X_t, U_t, X_{t+1})+ I(\bar{X}^t; U_t|U^{t-1}, \tilde{X}^t) \Bigr. \nonumber \\
+&\hspace{20ex}\Bigl. + V_{t+1}(\mu_{t+1}(x^{t+1}, u^t)) \Bigr\} \label{eqbellman}
+\end{align}
+with the terminal condition
+\[
+V_T(\mu_T(x^T, u^{T-1}))=\mathbb{E}^{\mu_T} c_T(X_T).
+\]
+\begin{lemma}
+For each $t=0, 1, ... , T$, there exists a function $\phi_t(\cdot)$ such that
+$
+V_t(\mu_t(x^t, u^{t-1}))=\mathbb{E}^{\mu_t}\{-\log \phi_t(X_t, U^{t-1})\}.
+$
+\end{lemma}
+\begin{proof}
+Proof by induction. If $t=T$, the claim holds by choosing $\phi_T(x_T, u^{T-1})=\exp\{-c_T(x_T)\}$.
+Thus, assume that there exists a function $\phi_{t+1}$ such that
+\[
+V_{t+1}(\mu_t(x^{t+1}, u^{t}))=\mathbb{E}^{\mu_{t+1}}\{-\log \phi_{t+1}(X_{t+1}, U^{t})\}.
+\]
+Then, the right hand side of the Bellman equation \eqref{eqbellman} becomes an optimization problem
+\begin{align}
+\min_{q_t}\quad &\mathbb{E}^{\mu_t, q_t, p_{t+1}}c_t(X_t, U_t, X_{t+1}) + I(\bar{X}^t; U_t|U^{t-1}, \tilde{X}^t) \nonumber \\
+&+\mathbb{E}^{\mu_t, q_t, p_{t+1}}\{-\log \phi_{t+1}(X_{t+1}, U^t)\}. \label{eqopt1}
+\end{align}
+Introducing a function 
+\begin{align*}
+\rho_t(x_t, u^t)=&\sum_{\mathcal{X}_{t+1}} p_{t+1}(x_{t+1}|x_t, u_t) \\
+&\times \{c_t(x_t, u_t, x_{t+1})-\log \phi_{t+1}(x_{t+1},u^t)\},
+\end{align*}
+\eqref{eqopt1} can be written as
+\[
+\min_{q_t} \quad \mathbb{E}^{\mu_t, q_t} \rho_t(\bar{X}_t, \tilde{X}_t, U^t)+I(\bar{X}^t; U_t|U^{t-1}, \tilde{X}^t).
+\]
+Considering $\bar{X}^t$ as $X$, $U_t$ as $U$, and $(U^{t-1}, \tilde{X}^t)$ as $Z$, the result in Section~\ref{secsinglestage} can be applied. Namely, the optimal solution is given by
+\begin{align*}
+q_t^*(u_t|x^t, u^{t-1})&=\frac{\nu_t^*(u_t|\tilde{x}^t, u^{t-1})\exp\{-\rho_t(x_t, u^t)\}}{\phi^*(x^t, u^{t-1})} \\
+\phi^*(x^t, u^{t-1})&=\sum_{\mathcal{U}_t} \nu_t^*(u_t|\tilde{x}^t, u^{t-1})\exp\{-\rho_t(x_t, u^t)\} \\
+\nu_t^*(u_t|\tilde{x}^t, u^{t-1})&=\sum_{\bar{\mathcal{X}}^t} \mu_t(\bar{x}^t|u^{t-1}, \tilde{x}^t)q^*(u_t|x^t, u^{t-1}).
+\end{align*}
+Moreover, the optimal value \eqref{eqopt1} can be written as
+\begin{equation}
+\label{eqoptvalue}
+\mathbb{E}^{\mu_t} \{-\log\phi_t^*(x^t, u^{t-1})\}.
+\end{equation}
+Thus, we have constructed a function $\phi_t^*(x^t, u^{t-1})$ such that the right hand side of the Bellman equation  \eqref{eqbellman} can be written as \eqref{eqoptvalue}.
+\end{proof}
+\begin{theorem}
+Suppose there exists a solution $(\mu^*, \nu^*, \rho^*, \phi^*, q^*)$ satisfying the following set of nonlinear equations
+\begin{align*}
+\mu_{t+1}^*(x^{t+1}, u^t)=&p_{t+1}(x_{t+1}|x_t, u_t)q_t^*(u_t|x^t, u^{t-1})\\
+&\times \mu_t^*(x^t,u^{t-1}) \\
+\nu_t^*(u_t|\tilde{x}^t, u^{t-1})=&\sum_{\bar{\mathcal{X}}^t}\mu_t(\bar{x}^t|u^{t-1}, \tilde{x}^t)q_t^*(u_t|x^t,u^{t-1}) \\
+\rho_t^*(x_t, u^t)=&\sum_{\mathcal{X}_{t+1}}p_{t+1}(x_{t+1}|x_t, u_t) \\
+&\times \{c_t(x_t, u_t, x_{t+1})-\log \phi_{t+1}(x_{t+1}, u^t)\} \\
+\phi_t^*(x^t, u^{t-1})=&\sum_{\mathcal{U}_t} \nu_t^*(u_t|\tilde{x}^t, u^{t-1})\exp\{-\rho_t^*(x_t, u^t)\} \\
+q_t^*(u_t|x^t, u^{t-1})=&\frac{\nu_t^*(u_t|\tilde{x}^t, u^{t-1})\exp\{-\rho_t^*(x_t, u^t)\}}{\phi_t^*(x^t, u^{t-1})}
+\end{align*}
+for each $t=0, 1, ..., T-1$ with the initial condition $\mu_0(x_0)=p_0(x_0)$ and the terminal condition $\phi_T(x_T, u^{T-1})=\exp\{-c_T(x_T)\}$. Then $\{q_t^*\}_{t=0}^{T-1}$ is the optimal solution to \eqref{eqmainproblem}.
+\end{theorem}

@@ -1,4 +1,4 @@
-\section{Interpretation of Directed Information}
+
 In this section, we consider a communication-theoretic meaning of the optimization problem \eqref{eqmainproblem}. Consider a feedback control architecture shown in Figure~\ref{fig:NCS}. 
 At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the controller, while the expensive component $\bar{X}_t$ is only available at a remote sensor. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. Codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$.
 Assuming that transmitting data over the communication channel incurs unit cost $\beta$ per \emph{bit}, consider the following communication design problem
