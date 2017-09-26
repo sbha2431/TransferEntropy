@@ -84,32 +84,41 @@ At every time step $t$, assume that the free component $\tilde{X}_t$ of the stat
 % \end{equation}
 % where $\beta \in \mathbb{R}$, $R = \sum_{t=0}^T R_t$ is the rate of communication, and $J(X^T,U^{T-1}) \defeq \sum_{t=0}^{T-1}{\mathbb{E}\{c(X_t,U_t)\}} + \mathbb{E}\{c_{T}(X_{T})\}$ for some state-action dependent cost $c(X_t,U_t) \in \mathbb{R}$. 
 
+%\begin{figure}
+%\centering
+%\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+%    % We start by placing the blocks
+%    \node [input, name=input] {};
+%    \node [sum, right of=input] (sum) {};
+%    \node [block, right of=sum,text width=2.1cm] (controller) {\textbf{Controller}\\$q_t(u_t|x^t,u^{t-1})$};
+%    \node [block, right of=controller,node distance = 3cm,text width=2cm] (dynamics) {\textbf{Dynamics}\\$p(x_{t+1}|x_t,u_t)$};
+%    % We draw an edge between the controller and system block to 
+%    % calculate the coordinate u. We need it to place the measurement block. 
+%    \node [output, right of=dynamics] (output) {};
+%    \node [sblock, below of=dynamics,text width = 1cm] (xc) {\textbf{Sensor}\\ \textit{Costly}};
+%    \node [sblock, left of=xc] (encoder) {\textbf{Encoder}};
+%	\node [sblock, below of=xc,node distance = 1.5cm, text width = 1cm] (xf) {\textbf{Sensor}\\\textit{Free}};
+%	\node [sblock, left of=encoder,node distance = 2cm] (decoder) {\textbf{Decoder}};
+%    % Once the nodes are placed, connecting them is easy. 
+%    \draw [draw,->] (input) -- node {} (sum);
+%    \draw [->] (sum) -- node {$X_t$} (controller);
+%    \draw [->] (controller) -- node {$u_t$} (dynamics);
+%    \draw [->] (dynamics) -- node [name=y] {$X_{t+1}$}(output);
+%    \draw [->] (y) |- (xc);
+%    \draw [->] (xc) -- node {$\bar{X}_t$} (encoder);
+%    \draw [->] (y) |-  (xf);
+%    \draw [->] (encoder) -- node {$W$} (decoder);
+%     \draw [->] (decoder) -| node {$(\bar{X}_t,\tilde{X}_t)$} (sum);
+%    \draw [->] (xf) -| node {$\tilde{X}_t$}(sum);
+%\end{tikzpicture}\caption{Control system architecture where $\bar{X}_t$ is sensed remotely and has to be transmitted to the controller through an encoder-decoder system.}\label{fig:NCS}
+%
+%\end{figure}
+
 \begin{figure}
 \centering
-\begin{tikzpicture}[auto, node distance=2cm,>=latex']
-    % We start by placing the blocks
-    \node [input, name=input] {};
-    \node [sum, right of=input] (sum) {};
-    \node [block, right of=sum,text width=2.1cm] (controller) {\textbf{Controller}\\$q_t(u_t|x^t,u^{t-1})$};
-    \node [block, right of=controller,node distance = 3cm,text width=2cm] (dynamics) {\textbf{Dynamics}\\$p(x_{t+1}|x_t,u_t)$};
-    % We draw an edge between the controller and system block to 
-    % calculate the coordinate u. We need it to place the measurement block. 
-    \node [output, right of=dynamics] (output) {};
-    \node [sblock, below of=dynamics,text width = 1cm] (xc) {\textbf{Sensor}\\ \textit{Costly}};
-    \node [sblock, left of=xc] (encoder) {\textbf{Encoder}};
-	\node [sblock, below of=xc,node distance = 1.5cm, text width = 1cm] (xf) {\textbf{Sensor}\\\textit{Free}};
-	\node [sblock, left of=encoder,node distance = 2cm] (decoder) {\textbf{Decoder}};
-    % Once the nodes are placed, connecting them is easy. 
-    \draw [draw,->] (input) -- node {} (sum);
-    \draw [->] (sum) -- node {$X_t$} (controller);
-    \draw [->] (controller) -- node {$u_t$} (dynamics);
-    \draw [->] (dynamics) -- node [name=y] {$X_{t+1}$}(output);
-    \draw [->] (y) |- (xc);
-    \draw [->] (xc) -- node {$\bar{X}_t$} (encoder);
-    \draw [->] (y) |-  (xf);
-    \draw [->] (encoder) -- node {$W$} (decoder);
-     \draw [->] (decoder) -| node {$(\bar{X}_t,\tilde{X}_t)$} (sum);
-    \draw [->] (xf) -| node {$\tilde{X}_t$}(sum);
-\end{tikzpicture}\caption{Control system architecture where $\bar{X}_t$ is sensed remotely and has to be transmitted to the controller through an encoder-decoder system.}\label{fig:NCS}
-
+\includegraphics[width=\columnwidth]{comm.pdf}
+\caption{Communiction-theoretic interpretation of the main problem \eqref{eqmainproblem}.}
+\label{fig:NCS}
 \end{figure}
+
+
