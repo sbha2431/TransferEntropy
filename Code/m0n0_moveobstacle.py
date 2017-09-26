@@ -105,7 +105,7 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
             for s in obs_states:
                 for s2 in obs_states:
                     if s == s2:
-                        psi[K,t,gwg.coords(s)[1],gwg.coords(s)[0],gwg.coords(s2)[1],gwg.coords(s2)[0]] = 20 # collision cost
+                        psi[K,t,gwg.coords(s)[1],gwg.coords(s)[0],gwg.coords(s2)[1],gwg.coords(s2)[0]] = 50 # collision cost
 
     mdp._prepare_post_cache()
     mdp._prepare_pre_cache()
