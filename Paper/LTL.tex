@@ -1,38 +1,44 @@
+\subsection{Temporal logic specifications} In this paper, we deal with a class of linear temporal logic specifications called \emph{co-safe LTL}. First, we will introduce the general LTL notation and then define the class of LTL specifications that are considered in this paper.
 
-\paragraph*{Specifications} We utilize linear temporal logic to specify the constraints on the system. Such specifications include invariance, safety or liveness. For example, we can specify that an agent infinitely often patrols a certain set of states (liveness) while not entering undesirable states (safety). It is known that synthesizing controllers for a rich array of temporal logic specifications reduces to a reachability problem on a lifted MDP \cite{BaierKatoen08}. In particular, we will represent specifications as a deterministic \emph{Rabin automaton} (DRA). See \cite{BaierKatoen08,safra1988complexity} for the connections between linear temporal logic specifications and their automata-based representations. 
+\paragraph*{Linear temporal logic} We utilize linear temporal logic (LTL) to specify the objectives of the system. Such specifications include invariance, safety or liveness. For example, we can specify that an agent infinitely often patrols a certain set of states (liveness) while not entering undesirable states (safety). A formula in LTL is constructed from a finite set of atomic propositions $\AP$, boolean logic operators $\wedge,\vee,\lnot,\Rightarrow,\Leftrightarrow$, and temporal connectives $\LTLsquare$ (always), $\LTLdiamond$ (eventually), $\LTLcircle$ (next), $\LTLu$ (until). For the formal semantics of LTL, see \cite{BaierKatoen08}.
 
-A DRA is a tuple $\mathcal{A} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$ where $\mathcal{S}$ is a finite set of states, $\AP$ is a set of atomic propositions, $2^{\AP}$ is the alphabet of the automaton. $T: \mathcal{S} \times 2^{\AP} \rightarrow \mathcal{S} $ is the transition function and $s_I \in \mathcal{S}$ is the initial state. The acceptance condition $\textrm{Acc}$ is a set of tuples $\{(J_i,K_i) \st i= 0,1,\dots,m \}$ where $J_i,K_i \in \mathcal{S}$. Let a $w = w_0 w_1 \dots \in 2^{\AP}$ be an infinite word in the language of the automaton. A corresponding infinite run is an infinite sequence of states $s_0 w_0 s_1 w_1 \dots \in S$ where $s_0 = s_I$ and $s_{i+1} = T(s_i,w_i)$. Let $\textrm{Inf}(\rho)$ be the set of states appearing infinitely often in a run $\rho$, \ie~the set $\{s \in \mathcal{S} \st \forall i \ge 0, \exists j \ge i, s_j = s\}$. We say $\rho$ is \emph{accepting} if there exists a pair $(J_i,K_i) \in \textrm{Acc}$ such that $\textrm{Inf}(\rho) \cap J_i = \emptyset$ and $\textrm{Inf}(\rho) \cap K_i \neq \emptyset$.
+\paragraph*{Co-safe LTL} We are interested in minimizing the information cost over a finite time horizon. However, this is not well defined for general LTL formulas as the cost can, in general, diverge. We will thus look at a class of formulas that can be satisfied in finite time called co-safe formulas \cite{keylist}. It was shown in \cite{Any} that any LTL formula in which the negation is only applied directly to the atomic propositions called \emph{positive normal form} and which only uses the connectives $\LTLdiamond$ $\LTLu$ are co-safe. 
+
+%It is known that synthesizing controllers for a rich array of temporal logic specifications reduces to a reachability problem on a lifted MDPa \cite{BaierKatoen08}. In particular, we will represent specifications as a deterministic \emph{Rabin automaton} (DRA). See \cite{BaierKatoen08,safra1988complexity} for the connections between linear temporal logic specifications and their automata-based representations. 
+\paragraph*{Deterministic finite automaton (DFA)} Any co-safe LTL formula $\varphi$ can be translated to a DFA \cite{keylist}. A DFA is a tuple $\mathcal{A}_{\varphi} = (\mathcal{S},s_I,2^{\AP}, \delta,\textrm{Acc})$ where $\mathcal{S}$ is a finite set of states, $\AP$ is a set of atomic propositions, $2^{\AP}$ is the alphabet of the automaton. $\delta: \mathcal{S} \times 2^{\AP} \rightarrow \mathcal{S} $ is the transition function and $s_I \in \mathcal{S}$ is the initial state. The acceptance condition $\textrm{Acc}$ is an accepting set of states $\textrm{Acc} \subseteq S$. Since $\varphi$ is co-safe, all infinite sequences that satisfy $\varphi$ have a finite \emph{good prefix}. Let $w = w_0 w_1 \dots \in 2^{{\AP}^{\omega}}$ be an infinite word in the language of the automaton such that $w \vDash \varphi$, then there exists $n\in \mathbb{N}$ such that $w_0,w_1,\dots w_n \vDash \varphi$. Hence, after reaching an accepting state $s \in \textrm{Acc}$, we can 'complete' the prefix by setting $\delta(s,\alpha) = s$ for all $\alpha \in 2^{\AP}$
+
+
+%$\{(J_i,K_i) \st i= 0,1,\dots,m \}$ where $J_i,K_i \in \mathcal{S}$. Let a $w = w_0 w_1 \dots \in 2^{\AP}$ be an infinite word in the language of the automaton. A corresponding infinite run is an infinite sequence of states $s_0 w_0 s_1 w_1 \dots \in S$ where $s_0 = s_I$ and $s_{i+1} = T(s_i,w_i)$. Let $\textrm{Inf}(\rho)$ be the set of states appearing infinitely often in a run $\rho$, \ie~the set $\{s \in \mathcal{S} \st \forall i \ge 0, \exists j \ge i, s_j = s\}$. We say $\rho$ is \emph{accepting} if there exists a pair $(J_i,K_i) \in \textrm{Acc}$ such that $\textrm{Inf}(\rho) \cap J_i = \emptyset$ and $\textrm{Inf}(\rho) \cap K_i \neq \emptyset$.
 
 \paragraph*{Product MDP}
-Given an MDP $M=(\mathcal{X},\mathcal{U},p,\AP,L)$ and a specification DRA
-$\mathcal{A} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$, we now define a \emph{product
-MDP}, $\mathcal{M} \defeq M \mathcal{\times A}$, as $\mathcal{M}
+Given an MDP $M=(\mathcal{X},\mathcal{U},p,\AP,L)$ and a specification DFA
+$\mathcal{A}_{\varphi} = (\mathcal{S},s_I,2^{\AP}, T,\textrm{Acc})$, we now define a \emph{product
+MDP}, $\mathcal{M} \defeq M \times\mathcal{A}_{\varphi}$, as $\mathcal{M}
 := (\mathcal{V},\mathcal{U}, \Delta,v_0,\textrm{ACC}_{\mathcal{M}})$ where
 \begin{itemize}
 	\item $\mathcal{V} = \mathcal{X} \times \mathcal{S}$;
 	\item $\Delta: \mathcal{V} \times \mathcal{U} \rightarrow \dist{\mathcal{V}}$ is the probabilistic
 		(partial) function with
-		that $\Delta\left((x_{t+1},s_{t+1})\vert (x_t,s_t)\right) = p(x_{t+1} \vert x_t,u_t ) $ if $T(s_t,L(x_{t+1}))
+		that $\Delta\left((x_{t+1},s_{t+1})\vert (x_t,s_t)\right) = p(x_{t+1} \vert x_t,u_t ) $ if $\delta(s_t,L(x_{t+1}))
 		= s_{t+1}$;
 	\item $v_0 = (x_0,s_I)$; is the initial state; and
-	\item $\textrm{Acc}_{\mathcal{M}} =
-		((\hat{J}_i,\hat{K}_i) \st i = 1,\dots,m \land \hat{J}_i = \mathcal{X}
-		\times J_i,\hat{K}_i = \mathcal{X} \times K_i)$ is the accepting condition.
+	\item $\textrm{Acc}_{\mathcal{M}} = L(s) \cup \{\textrm{acc}_\varphi\}$
 \end{itemize}
+Intuitively, once a path in $\mathcal{M}_{\varphi}$ reaches a state labeled with the atomic proposition $\textrm{acc}_\varphi$, it satisfies the formula $\varphi$.  Hence, the problem of finding a policy $q$ that maximizes the probability of satisfying a given co-safe LTL specification becomes a matter of synthesizing a strategy to reach a state in $\textrm{Acc}_{\mathcal{M}}$. This is a reachability problem in an MDP and can be solved using value iteration. This results in a \emph{memoryless} policy in $\mathcal{M}_\varphi$. Intuitively, the states of the product MDP can be thought of a \emph{memory state}. From this policy we can construct a \emph{finite-memory} policy in $M$. For more details on this construction, we refer the reader to  \cite{forejt2011automated}
 
-An end component of $\mathcal{M}$ is said to be an \textit{accepting end
-component} if $W \cap \hat{J}_i = \emptyset$ and $W \cap \hat{K}_i \neq
-\emptyset$ for some $(\hat{J}_i,\hat{K}_i) \in \textrm{Acc}_\mathcal{M}$.
-We denote the set of accepting end components in a product MDP $\mathcal{M}$
-by $\textrm{AEC}(\mathcal{M})$, and we denote the set of accepting end \textit{states} as
-$\mathcal{C} := \{v \in W \st (W,x) \in \textrm{AEC}(\mathcal{M})\}$. We know that once we
-enter $v \in \mathcal{W}$ and enact the corresponding policy $q$, the strategy will
-ensure that, for some $(\hat{J}_i,\hat{K}_i) \in \textrm{Acc}_\mathcal{M}$, we visit $v
-\in \hat{J}_i$ finitely often and $v \in \hat{K}_i$ infinitely often. Hence, the
-problem of finding a policy $q$ that maximizes the probability of satisfying a
-given temporal logic specification becomes a matter of synthesizing a strategy to reach a
-state in $\mathcal{C}$ and once inside the set, the corresponding policy $q$ can be
-followed to ensure the specification will be satisfied. Given the structure of $\mathcal{M}$, the accepting end components can be computed by algorithms in \cite{BaierKatoen08}. 
+%An end component of $\mathcal{M}$ is said to be an \textit{accepting end
+%component} if $W \cap \hat{J}_i = \emptyset$ and $W \cap \hat{K}_i \neq
+%\emptyset$ for some $(\hat{J}_i,\hat{K}_i) \in \textrm{Acc}_\mathcal{M}$.
+%We denote the set of accepting end components in a product MDP $\mathcal{M}$
+%by $\textrm{AEC}(\mathcal{M})$, and we denote the set of accepting end \textit{states} as
+%$\mathcal{C} := \{v \in W \st (W,x) \in \textrm{AEC}(\mathcal{M})\}$. We know that once we
+%enter $v \in \mathcal{W}$ and enact the corresponding policy $q$, the strategy will
+%ensure that, for some $(\hat{J}_i,\hat{K}_i) \in \textrm{Acc}_\mathcal{M}$, we visit $v
+%\in \hat{J}_i$ finitely often and $v \in \hat{K}_i$ infinitely often. Hence, the
+%problem of finding a policy $q$ that maximizes the probability of satisfying a
+%given temporal logic specification becomes a matter of synthesizing a strategy to reach a
+%state in $\mathcal{C}$ and once inside the set, the corresponding policy $q$ can be
+%followed to ensure the specification will be satisfied. Given the structure of $\mathcal{M}$, the accepting end components can be computed by algorithms in \cite{BaierKatoen08}. 
 
 % \paragraph{T-step state value}
 % Let $\mathcal{M}$ be a product MDP, $C = \textrm{AEC}(\mathcal{M})$ be the set of accepting end components and $q$ be the agent's policy in $\mathcal{M}$. We define the value of a state as the probability of reaching the accepting end component in $T$ steps or less which is equivalent to satisfying the LTL specification. Formally, for each state $v\in V$, given a finite time horizon $T \in \mathbb{N}$, the $T$-step state value at $v$ for the agent is $W^q = h^{\leq T}(v,\mathcal{C})$. 

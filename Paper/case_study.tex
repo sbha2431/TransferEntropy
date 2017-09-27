@@ -1,5 +1,5 @@
 \subsection{Moving obstacle}
-We look at a motion planning problem shown in figure \ref{fig:exp1} where the agent is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. This is expressed in temporal logic as \emph{always avoid} 'crash' and \emph{infinitely often} go to 'goal'. Where the atomic proposition 'crash' is true in the red static obstacles or when the state of the agent is the same as the state of the moving obstacle. The atomic proposition 'goal' is true in the green cell. The DRA representation is shown in Figure \ref{fig:dra}.
+We look at a motion planning problem shown in figure \ref{fig:exp1} where the agent is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. This is expressed in LTL as $\LTLdiamond \lnot$'crash' $\wedge$  $\LTLdiamond$'goal'. Where the atomic proposition 'crash' is true in the red static obstacles or when the state of the agent is the same as the state of the moving obstacle. The atomic proposition 'goal' is true in the green cell. The DRA representation is shown in Figure \ref{fig:dra}.
 \begin{figure}
 \subfloat[Gridworld with moving obstacle \label{fig:exp1}]{
 \begin{tikzpicture}[scale=1.2]
@@ -48,7 +48,7 @@ We look at a motion planning problem shown in figure \ref{fig:exp1} where the ag
 \node at (0.75,-2.25) {\tiny{34}};
 \end{tikzpicture}
 }
-\subfloat[Specification DRA\label{fig:dra}]{
+\subfloat[Specification DFA\label{fig:dra}]{
 	\begin{tikzpicture}[shorten >=1pt,node distance=1.6cm,on grid]
 	\node[state,initial]   (q_0)                {$s_0$};
 	\node[state,accepting]           (q_1) [right=of q_0] {$s_1$};
@@ -62,7 +62,7 @@ We look at a motion planning problem shown in figure \ref{fig:exp1} where the ag
 	(q_2) edge [loop below]   node {} (q_2);
 	\end{tikzpicture}
 }
-\caption{Gridworld and DRA  with $(J,K) = (s_2,s_1)$ depicting a scenario where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:exp2}
+\caption{Gridworld and DFA  with $\textrm{Acc}_{\mathcal{M}} = (s_1)$ depicting a scenario where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:exp2}
 \end{figure}
 
 The state space of the agent is $(x,y,x_{obs},y_{obs})$ where $(x_{obs},y_{obs})$ form the position of the moving obstacle. We assume that the state of the moving obstacle to be expensive to observe. Formally, we let $\mathcal{\tilde{X}} = (x,y)$ and $\mathcal{\bar{X}} = (x_{obs},y_{obs})$. 

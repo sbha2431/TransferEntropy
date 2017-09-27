@@ -37,8 +37,10 @@ The main problem we study in this paper is
 \end{align}
 where $\beta>0$ is a given constant.
 
-A communication-theoretic meaning of the optimization problem \eqref{eqmainproblem} can be given by considering a feedback control architecture shown in Figure \ref{fig:NCS}. 
-At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the controller, while the expensive component $\bar{X}_t$ is only available at a remote sensor. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. Codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$. The transfer entropy cost in \eqref{eqdi} can be used to model the \emph{communication rate}. In section \ref{sec:ab}, we present a formal proof showing that \eqref{eqdi} provides a lower bound to the communication rate to justify its use in our problem formulation.
+A communication-theoretic meaning of the optimization problem \eqref{eqmainproblem} is discussed in section \ref{sec:ab} where we provide a physical interpretation of the transfer entropy cost.
+
+% can be given by considering a feedback control architecture shown in Figure \ref{fig:NCS}. 
+%At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the controller, while the expensive component $\bar{X}_t$ is only available at a remote sensor. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. Codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$. The transfer entropy cost in \eqref{eqdi} can be used to model the \emph{communication rate}. In section \ref{sec:ab}, we present a formal proof showing that \eqref{eqdi} provides a lower bound to the communication rate to justify its use in our problem formulation.
 
 %Consider the control system architecture shown in Figure \ref{fig:NCS} modeled by a finite state discrete-time MDP. The state space $\mathcal{X}$ is composed of the product of two sets  $\mathcal{X} = \mathcal{X}_e \times \mathcal{X}_f$. Hence, each state in the state space $x \in \mathcal{X}$ is partitioned into two state variables $x = (x_e,x_f)$. Recall that a policy is a conditional policy distribution given by $q(u_t|x^t,u^{t-1})$. We can write this now as $q(u_t|x_e^t,x_f^t,u^{t-1})$. We allow the policy synthesizer full access to the value of $x_f$, but we restrict access to the value of $x_e$. 
 
@@ -113,12 +115,5 @@ At every time step $t$, assume that the free component $\tilde{X}_t$ of the stat
 %\end{tikzpicture}\caption{Control system architecture where $\bar{X}_t$ is sensed remotely and has to be transmitted to the controller through an encoder-decoder system.}\label{fig:NCS}
 %
 %\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=\columnwidth]{comm.pdf}
-\caption{Example of a feedback control structure with remote and local sensors}
-\label{fig:NCS}
-\end{figure}
 
 
