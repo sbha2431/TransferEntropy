@@ -1,5 +1,6 @@
-\subsection{Single stage problem}
 Now, given the optimization problem in equation (\ref{eqmainproblem}), we derive sufficient conditions for optimality for the policy $q_t(u_t|x^t,u^{t-1})$. First, we look at a generalized version of the problem for a single time step. We use that to set up a backwards dynamic programming problem where the generalized version is solved at each step.
+
+\subsection{Single stage problem}
 
 \label{secsinglestage}
 Let $X, U, Z$ be random variables taking values from sets $\mathcal{X}, \mathcal{U}, \mathcal{Z}$.
@@ -9,7 +10,7 @@ Then the optimal solution $q^*(u|x, z)$ to a convex optimization problem
 \[
 \min_{q(u|x,z)} \mathbb{E}c(X,U,Z)+I(X;U|Z)
 \]
-is given by \cite{petersen2012robust}
+is given by \cite{csiszar1974extremum}
 \begin{align*}
 q^*(u|x,z)&=\frac{\nu^*(u|z)\exp\{-c(x,u,z)\}}{\phi^*(x,z)} \\
 \phi^*(x,z)&=\sum_{\mathcal{U}} \nu^*(u|z)\exp\{-c(x,u,z)\} \\
@@ -18,8 +19,6 @@ q^*(u|x,z)&=\frac{\nu^*(u|z)\exp\{-c(x,u,z)\}}{\phi^*(x,z)} \\
 Moreover, the optimal value is $\mathbb{E}^{p(x,z)}\{-\log \phi^*(X,Z)\}$.
 
 \subsection{Dynamic programming}
-In what follows, we present the solution procedure \eqref{eqmainproblem} on a product MDP. Hence, we denote $\tilde{X} = (\tilde{X},S)$ and $\bar{X} = \bar{X}$. 
-
 We assume the initial condition $\mu_0(x_0)=p_0(x_0)$ of the Markovian dynamics is given. In this subsection, we solve the optimization problem \eqref{eqmainproblem} using dynamic programming. In what follows, we assume $\beta=1$ without loss of generality. For each $t=0, 1, ... , T-1$, introduce the value function
 \begin{align*}
 &V_t(\mu_t(x^t, u^{t-1})):= \\
