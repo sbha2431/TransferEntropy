@@ -1,0 +1,64 @@
+We first prove the following lemma.
+\begin{lemma}
+\label{lemcoding}
+For each $T=1, 2, ...$, we have
+\[
+I(\bar{X}^{T} \rightarrow W^{T} || U^{T-1},\tilde{X}^{T}) \geq I(\bar{X}^{T} \rightarrow U^{T} || \tilde{X}^{T}).
+\]
+\end{lemma}
+\begin{proof}
+The result is established by the following chain of inequalities.
+\begin{align*}
+&  I(\bar{X}^T \rightarrow W^T || U^{T-1},\tilde{X}^T) - I(\bar{X}^T \rightarrow U^T || \tilde{X}^T)  \\
+& = \sum_{t=0}^T I\left(\bar{X}^t;W_t|W^{t-1},U^{t-1},\tilde{X}^t \right) - I\left(\bar{X}^t;U_t|U^{t-1},\tilde{X}^t \right)\\
+& \stackrel{\text{(a)}}{=} \sum_{t=0}^T I\left(\bar{X}^t;W_t,U_t|W^{t-1},U^{t-1},\tilde{X}^t \right) \\
+& \hspace{10ex}- I\left(\bar{X}^t;U_t|U^{t-1},\tilde{X}^t \right)\\
+& \stackrel{\text{(b)}}{=} \sum_{t=0}^T I\left(\bar{X}^t;W^t|U^{t},\tilde{X}^t \right) - I\left(\bar{X}^t;W^{t-1}|U^{t-1},\tilde{X}^t \right)\\
+& \stackrel{\text{(c)}}{=} \sum_{t=0}^T I\left(\bar{X}^t;W^t|U^{t},\tilde{X}^t \right) - I\left(\bar{X}^{t-1};W^{t-1}|U^{t-1},\tilde{X}^t \right)\\
+& \stackrel{\text{(d)}}{\geq} \sum_{t=0}^T I\left(\bar{X}^t;W^t|U^{t},\tilde{X}^t \right) - I\left(\bar{X}^{t-1};W^{t-1}|U^{t-1},\tilde{X}^{t-1} \right)\\
+& \stackrel{\text{(e)}}{=} I\left(\bar{X}^T;W^T | U^T,\tilde{X}^T \right) \geq 0. 
+\end{align*}
+Equality (a) holds since
+\begin{align*}
+&I(\bar{X}^t; W_t, U_t|W^{t-1}, U^{t-1}, \tilde{X}^t)=\\
+&I(\bar{X}^t; W_t|W^{t-1}, U^{t-1}, \tilde{X}^t)
++I(\bar{X}^t; U_t|W^t, U^{t-1}, \tilde{X}^t)
+\end{align*}
+and the second term is zero since $U_t$ is conditionally independent of $\bar{X}^t$ given $(W^t, U^{t-1})$. Equality (b) can be shown by applying the chain rule for mutual information in two different ways:
+\begin{align*}
+&I(\bar{X}^t; W^t, U_t|U^{t-1}, \tilde{X}^t) \\
+&=I(\bar{X}^t; W^{t-1}|U^{t-1}, \tilde{X}^t)+I(\bar{X}^t; W_t, U_t| W^{t-1}, U^{t-1}, \tilde{X}^t) \\
+&=I(\bar{X}^t; U_t|U^{t-1}, \tilde{X}^t)+I(\bar{X}^t;W^t|U^t, \tilde{X}^t).
+\end{align*}
+Equality (c) holds since
+\begin{align*}
+&I(\bar{X}^t; W^{t-1}|U^{t-1}, \tilde{X}^t)=\\
+&I(\bar{X}^{t-1}; W^{t-1}|U^{t-1}, \tilde{X}^t)+I(\bar{X}_t; W^{t-1}|U^{t-1}, \tilde{X}^t, \bar{X}^{t-1})
+\end{align*}
+and the second term is zero. To see (d), apply the chain rule in two different ways:
+\begin{align*}
+&I(\bar{X}^{t-1}, \tilde{X}_t; W^{t-1}|U^{t-1},\tilde{X}^{t-1}) \\
+&=I(\tilde{X}_t; W^{t-1}|U^{t-1}, \tilde{X}^{t-1})+I(\bar{X}^{t-1}; W^{t-1}|U^{t-1}, \tilde{X}^t) \\
+&=I(\bar{X}^{t-1}; W^{t-1}|U^{t-1}, \tilde{X}^{t-1}) \\
+&\hspace{5ex}+I(\tilde{X}_t;W^{t-1}|U^{t-1},\tilde{X}^{t-1}, \bar{X}^{t-1}).
+\end{align*}
+Since the last term is zero, we have 
+\[
+I(\bar{X}^{t-1}; W^{t-1}|U^{t-1}, \tilde{X}^{t-1}) \geq I(\bar{X}^{t-1}; W^{t-1}|U^{t-1}, \tilde{X}^t).
+\]
+Finally, (e) is due to the telescopic cancellation.
+\end{proof}
+
+Theorem~\ref{theorate} can now be shown as
+\begin{align*}
+R&=\sum_{t=0}^{T-1} R_t \\
+&\stackrel{\text{(a)}}{\geq} \sum\nolimits_{t=0}^{T-1} H(W_t) \\
+&\stackrel{\text{(b)}}{\geq} \sum\nolimits_{t=0}^{T-1} H(W_t|W^{t-1}, U^{t-1}, \tilde{X}^t) \\
+&\stackrel{\text{(c)}}{\geq} \sum\nolimits_{t=0}^{T-1} H(W_t|W^{t-1}, U^{t-1}, \tilde{X}^t) \\
+&\hspace{10ex}-H(W_t|\bar{X}^t, W^{t-1}, U^{t-1}, \tilde{X}^t) \\
+&=\sum\nolimits_{t=0}^{T-1} I(\bar{X}^t; W_t|W^{t-1}, U^{t-1}, \tilde{X}^t) \\
+&=I(\bar{X}^{T-1}\rightarrow W^{T-1}\| U^{T-2}, \tilde{X}^{T-1}) \\
+&\stackrel{\text{(d)}}{\geq} I(\bar{X}^{T-1}\rightarrow U^{T-1}\| \tilde{X}^{T-1})
+\end{align*}
+Inequality (a) is a standard result - Theorem 2.6.4 in \cite{cover2012elements}. Inequality (b) holds since conditioning does not increase entropy, and (c) is because entropy is non-negative. Finally, (d) is due to Lemma~\ref{lemcoding}.
+
