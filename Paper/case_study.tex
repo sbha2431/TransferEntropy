@@ -1,5 +1,5 @@
 \subsection{Moving obstacle}
-We look at a motion planning problem shown in figure \ref{fig:exp1} where the agent is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. This is expressed in LTL as $\LTLdiamond \lnot$'crash' $\wedge$  $\LTLdiamond$'goal'. Where the atomic proposition 'crash' is true in the red static obstacles or when the state of the agent is the same as the state of the moving obstacle. The atomic proposition 'goal' is true in the green cell. The DFA representation is shown in Figure \ref{fig:dra}.
+We look at a motion planning problem shown in Figure \ref{fig:casestudy}\subref{fig:exp1} where the agent is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. This is expressed in LTL as $\LTLdiamond \lnot$'crash' $\wedge$  $\LTLdiamond$'goal'. Where the atomic proposition 'crash' is true in the red static obstacles and when the state of the agent is the same as the state of the moving obstacle. The atomic proposition 'goal' is true in the green cell. The DFA representation is shown in Figure \ref{fig:casestudy}\subref{fig:dra}.
 \begin{figure}
 \subfloat[Gridworld with moving obstacle \label{fig:exp1}]{
 \begin{tikzpicture}[scale=1.2]
@@ -62,12 +62,12 @@ We look at a motion planning problem shown in figure \ref{fig:exp1} where the ag
 	(q_2) edge [loop below]   node {} (q_2);
 	\end{tikzpicture}
 }
-\caption{Gridworld and DFA  with $\textrm{Acc}_{\mathcal{M}} = (s_1)$ depicting a scenario where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:exp2}
+\caption{Gridworld and DFA  with $\textrm{Acc}_{\mathcal{M}} = (s_1)$ depicting a scenario where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:casestudy}
 \end{figure}
 
 The state space of the agent is $(x,y,x_{obs},y_{obs})$ where $(x_{obs},y_{obs})$ form the position of the moving obstacle. We assume that the state of the moving obstacle to be expensive to observe. Formally, we let $\mathcal{\tilde{X}} = (x,y)$ and $\mathcal{\bar{X}} = (x_{obs},y_{obs})$. 
 
- Intuitively we expect to see if that we set the $\beta$ parameter high, \ie if the cost of information is high, the agent will go the long way around the wall as it will be too expensive to observe the moving obstacle. Howver, if the agent knows the position of the moving obstacle at all times, it can easily plan to avoid collision, and hence for low $\beta$, we expect to see the agent go through shorter route. We use a time horizon $T = 25$ and test for $\beta = 0.5$ and $\beta=5$
+ Intuitively we expect to see if that we set the $\beta$ parameter high, \ie if the cost of information is high, the agent will go the long way around the wall as it will be too expensive to observe the moving obstacle. However, if the agent knows the position of the moving obstacle at all times, it can easily plan to avoid collision, and hence for low $\beta$, we expect to see the agent go through shorter route. We use a time horizon $T = 25$ and test for $\beta = 0.5$ and $\beta=5$
 
 \begin{figure}
 	\subfloat[$\beta = 0.5$\label{simple-grid}]{

@@ -27,7 +27,7 @@
 
 \author{Suda Bharadwaj$^{1}$ \and Takashi Tanaka$^{1}$ \and Ufuk Topcu$^{1}$% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{$^{1}$ Suda Bharadwaj, Rayna Dimitrova, and Ufuk Topcu are with the University of Texas at Austin}%
+\thanks{$^{1}$ Suda Bharadwaj, Takashi Tanaka, and Ufuk Topcu are with the Department of Aerospace Engineering and Engineering Mechanics at the University of Texas at Austin. E-mail: \{sudab, ttanaka, utopcu\}@utexas.edu}%
 %\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University, Dayton, OH 45435, USA {\tt\small b.d.researcher@ieee.org}}%
 }
 
@@ -52,7 +52,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assume some of the state variabales are expensive to measure, and the information cost is quantified by the \emph{transfer entropy} from the specified state variables to the control action. We then find the policy that acts to minimize the weighted sum of the information cost and the cost of failing to satisfy the specification. We provide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
+We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified as a co-safe linear temporal logic (LTL) formula. We assume some of the state variables are expensive to measure, and the information cost is given by the transfer entropy from the specified state variables to the control action. We then find the policy that acts to minimize the weighted sum of the information cost and the cost of failing to satisfy the specification. We provide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,7 +63,7 @@ We consider Markov decision processes (MDPs) in which the information cost quant
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Preliminaries}
-The sequence $x_1,x_{2}...x_t$ is denoted $x^t$ and the subsequence $x_k,x_{k+1}...x_l$ is denoted by $x_{l}^{k}$. We use upper-case letters to denote random variables and lower-case letters for the realizations of the corresponding random variable. \\
+The sequence $(x_0,x_{1}...x_t)$ is denoted $x^t$ and the subsequence $x_l,x_{k+1}...x_k$ is denoted by $x_{l}^{k}$. We use upper-case letters to denote random variables and lower-case letters for the realizations of the corresponding random variable. \\
 We denote by $\dist{\mathcal{X}}$ the set of all probability distributions on a finite
 set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_{x\in \mathcal{X}}f(x)=1$. Finally, for a set $\mathcal{S}$, we define $2^\mathcal{S}$ as the set of all subsets of $\mathcal{S}$ and $S^{\omega}$ as the set of all infinite sequences of elements in $\mathcal{S}$
 %\subsection{Markov decision processes}
@@ -83,9 +83,6 @@ set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_
 \input{problem_Suda}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 
 \section{Optimality conditions}
 \input{opt_cond_tak}
@@ -113,7 +110,7 @@ In this paper, we presented a formal way to integrate co-safe LTL constraints in
 \bibliography{main}
 
 \appendices
-
+\vspace{-0.15cm}
 \section{Proof of Theorem 5.1} \label{sec:prf}
 \input{app1_off}
 

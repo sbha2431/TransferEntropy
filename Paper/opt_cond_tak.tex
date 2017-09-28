@@ -1,5 +1,5 @@
-Now, given the optimization problem in equation (\ref{eqmainproblem}), we derive sufficient conditions for optimality for the policy $q_t(u_t|x^t,u^{t-1})$. First, we look at a generalized version of the problem for a single time step. We use that to set up a backwards dynamic programming problem where the generalized version is solved at each step.
-
+Now, given the optimization problem in equation (\ref{eqmainproblem}), we derive sufficient conditions for optimality for the policy $q_t(u_t|x^t,u^{t-1})$. First, we look at a problem with a single time step. We use that to set up a backwards dynamic programming problem where the single-stage problem is solved at each step.
+\vspace{-0.25cm}
 \subsection{Single stage problem}
 
 \label{secsinglestage}
@@ -19,7 +19,7 @@ q^*(u|x,z)&=\frac{\nu^*(u|z)\exp\{-c(x,u,z)\}}{\phi^*(x,z)} \\
 Moreover, the optimal value is $\mathbb{E}^{p(x,z)}\{-\log \phi^*(X,Z)\}$.
 
 \subsection{Dynamic programming}
-We assume the initial condition $\mu_0(x_0)=p_0(x_0)$ of the Markovian dynamics is given. In this subsection, we solve the optimization problem \eqref{eqmainproblem} using dynamic programming. In what follows, we assume $\beta=1$ without loss of generality. For each $t=0, 1, ... , T-1$, introduce the value function
+We now solve the optimization problem \eqref{eqmainproblem} using dynamic programming. We assume the initial condition $\mu_0(x_0)=p_0(x_0)$ of the Markovian dynamics is given. In what follows, we assume $\beta=1$ without loss of generality. For each $t=0, 1, ... , T-1$, introduce the value function
 \begin{align*}
 &V_t(\mu_t(x^t, u^{t-1})):= \\
 & \min_{\{q_k\}_{k=t}^{T-1}} \sum_{k=t}^{T-1} \mathbb{E}c_t(X_t, U_t, X_{t+1})+I(\bar{X}^t; U_t|U^{t-1}, \tilde{X}^t).

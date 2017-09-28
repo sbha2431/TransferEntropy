@@ -13,18 +13,20 @@ At every time step, observing a realization of the ``free'' component $\tilde{X}
 
 As a motivating scenario, imagine the MDP models a Mars rover. The value of $\bar{x}$ is measured by an orbiter while $\tilde{x}$ is sensed using on-board sensors. Since the orbiter will only be able to communicate with the rover during part of its orbit, we will want to penalize the reliance on this information in the policy synthesis process. To do this we introduce some information-theoretic terms. 
 
-Let $\tilde{X} \in \mathcal{\tilde{X}}$, $\bar{X} \in \mathcal{\bar{X}}$, $U\in \mathcal{U}$ be random variables of which $\tilde{x},\bar{x},u$ are realizations. The \emph{conditional mutual information} is given by 
-
-\begin{align*}
-I  (\bar{X}^t;U_t & \vert U^{t-1},\tilde{X}^{t}) \defeq \nonumber \\ &\mathbb{E}_{U^T,\bar{X}^T,\tilde{X}^T}\bigg\{\log\frac{\mu_{t}(U_t|\bar{X}^{t},U^{t-1},\tilde{X}^t)}{\mu_{t}(U_t\vert U^{t-1}, \tilde{X})^t}\bigg\}.
-\end{align*}
-where for each $t=0,1, ..., T-1$, $\mu_t(x^t, u^{t-1})$ is the joint distribution defined recursively by the state transition probability $p_t(x_{t+1}|x_t, u_t)$ and a decision policy $q_t(u_t|x^t, u^{t-1})$ as
+The \emph{joint distribution} $\mu_{t}(x^{t}, u^{t-1})$ defined recursively by the state transition probability $p_t(x_{t+1}|x_t, u_t)$ and a decision policy $q_t(u_t|x^t, u^{t-1})$ as
 \[
 \mu_{t+1}(x^{t+1}, u^t)=p_t(x_{t+1}|x_t, u_t)q_t(u_t|x^t, u^{t-1})\mu_t(x^t, u^{t-1}).
 \]
 
 
-We assume that the observation cost over the time horizon $0\leq t\leq T-1$ is proportional to the transfer entropy or \emph{causally conditioned directed information}
+ The \emph{conditional mutual information} is given by 
+
+\begin{align*}
+I  (\bar{X}^t;U_t & \vert U^{t-1},\tilde{X}^{t}) \defeq \nonumber \\ &\mathbb{E}_{\mu_T}\bigg\{\log\frac{\mu_{t}(U_t|\bar{X}^{t},U^{t-1},\tilde{X}^t)}{\mu_{t}(U_t\vert U^{t-1}, \tilde{X})^t}\bigg\}.
+\end{align*}
+where for each $t=0,1, ..., T-1$, $\mu_t(x^t, u^{t-1})$ is 
+
+We assume that the observation cost over the time horizon $0\leq t\leq T-1$ is proportional to the \emph{causally conditioned directed information} (also known as \emph{causally conditioned transfer entropy}).
 \begin{equation}
 \label{eqdi}
 I(\bar{X}^{T-1}\rightarrow U^{T-1}\| \tilde{X}^{T-1})=\sum_{t=0}^{T-1} I(\bar{X}^t; U_t|U^{t-1},\tilde{X}^t).
