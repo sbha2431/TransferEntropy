@@ -24,9 +24,9 @@
 \title{Minimal-Information Control of MDPs with Temporal Logic Constraints
 }
 
-\author{Suda Bharadwaj and Takashi Tanaka and Ufuk Topcu% <-this % stops a space
+\author{Suda Bharadwaj$^{1}$ \and Takashi Tanaka$^{1}$ \and Ufuk Topcu$^{1}$% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
-%\thanks{$^{1}$Albert Author is with Faculty of Electrical Engineering, Mathematics and Computer Science, University of Twente, 7500 AE Enschede, The Netherlands {\tt\small albert.author@papercept.net}}%
+\thanks{$^{1}$ Suda Bharadwaj, Rayna Dimitrova, and Ufuk Topcu are with the University of Texas at Austin}%
 %\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University, Dayton, OH 45435, USA {\tt\small b.d.researcher@ieee.org}}%
 }
 
@@ -51,7 +51,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the weighted sum of the information cost and the cost of failing to satisfy the specification. We proide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
+We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified in linear temporal logic (LTL). We assign a cost to transferring information on some of the state variables, e.g, states that are expensive to measure. We then find the policy that acts to minimize the weighted sum of the information cost and the cost of failing to satisfy the specification. We provide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,10 +62,9 @@ We consider Markov decision processes (MDPs) in which the information cost quant
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Preliminaries}
-The sequence $\left(x_1,x_{2}...x_t \right)$ is denoted $x^t$ and the subsequence $\left(x_k,x_{k+1}...x_l \right)$ is denoted by $x_{l}^{k}$. We use upper-case letters to denote random variables and lower-case letters for the realizations of the corresponding random variable. \\
+The sequence $x_1,x_{2}...x_t$ is denoted $x^t$ and the subsequence $x_k,x_{k+1}...x_l$ is denoted by $x_{l}^{k}$. We use upper-case letters to denote random variables and lower-case letters for the realizations of the corresponding random variable. \\
 We denote by $\dist{\mathcal{X}}$ the set of all probability distributions on a finite
-set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_{x\in \mathcal{X}}f(x)=1$. %For $f\in \dist{\mathcal{X}}$ we denote by $\supp(f)$ the \emph{support} of $f$. That is, the set $\{x\in X \st f(x)>0\}$.
-
+set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_{x\in \mathcal{X}}f(x)=1$. Finally, for a set $\mathcal{S}$, we define $2^\mathcal{S}$ as the set of all subsets of $\mathcal{S}$ and $S^{\omega}$ as the set of all infinite sequences of elements in $\mathcal{S}$
 %\subsection{Markov decision processes}
 \input{MDP} 
 
@@ -105,16 +104,16 @@ set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusion and future work}
-In this paper, we presented a  formal way to integrate co-safe LTL constraints into a minimal-information MDP problem. We aim to relax the co-safe requirement to look at more general classes of LTL formulas by looking at the mean information cost over an infinite run. Furthermore,We aim to extend this work to a multiple coordinating agent formulation as this problem setting naturally lends itself to minimizing communication between agents who are trying to satisfy a joint specification. 
+In this paper, we presented a formal way to integrate co-safe LTL constraints into a minimal-information MDP problem. This is the first step in analyzing temporal logic constraints in communication constrained problems. For future work, we aim to relax the co-safe requirement to allow more general classes of LTL formulas by analyzing the mean information cost over an infinite run. Furthermore, we aim to extend this work to a multiple coordinating agent formulation as this problem setting naturally lends itself to minimizing communication between agents who are trying to satisfy a joint specification. 
 
 
 
-%\bibliographystyle{IEEEtran}
-%\bibliography{IEEEabrv,main}
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,main}
 
 \appendices
 
 \section{Proof of Theorem 5.1} \label{sec:prf}
-%\input{app1}
+\input{app1}
 
 \end{document}

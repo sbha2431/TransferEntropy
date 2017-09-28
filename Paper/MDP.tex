@@ -25,8 +25,8 @@ are known to be sufficient for certain classes of problems, such as pure reachab
 A Markov chain is a tuple $(\mathcal{X},x_I,p)$ where $\mathcal{X}$ is (in our case) a finite set of states, $x_I \in \mathcal{X}$ is the initial state, and $p: \mathcal{X} \to \dist{Q}$ is a probabilistic transition function. An MDP $M$ together with a policy $q$ induces a \emph{Markov chain} $M^q$.  Notions of runs in a Markov chain are the same as those defined earlier. 
 
 Given a Markov chain $M^q = (\mathcal{X},x_I,p)$, the state visited at the step $t$ is
-a random variable. We denote by $h^{\leq i}(x,\mathcal{B})$ the probability that a
-run starting from state $x$ visits the set $\mathcal{B}$ within $i$ steps. By definition
+a random variable. We denote by $h^{k}(x,\mathcal{B})$ the probability that a
+run starting from state $x$ visits the set $\mathcal{B}$ in exactly $k$ steps. By definition
 $h^{\leq i}(x,\mathcal{B}) = \sum_{k=0}^{i} h^{k}(x,\mathcal{B})$ where $h^0(x,\mathcal{B})$ is $0$ if $x
 \not\in \mathcal{B}$ and $1$ otherwise. %Furthermore, in the infinite horizon setting,
 %$h(x,\mathcal{B}) = \sum_{k=0}^{\infty}h^{k}(x,\mathcal{B})$.
@@ -36,17 +36,17 @@ $h^{\leq i}(x,\mathcal{B}) = \sum_{k=0}^{i} h^{k}(x,\mathcal{B})$ where $h^0(x,\
 %u_0 x_1 u_1 \dots$ is consistent with $x$ if for all $t \ge 0$ we have that
 %$u_t \in \{u| q_t(u|x^t,u^{t-1} > 0)\}$ and $p(x_{t+1}|x_t,u_t)>0$
 
-\paragraph*{End components}
-An \textit{end component} of an MDP $M=(\mathcal{X},\mathcal{U},p)$
-is a pair $(\mathcal{B},\alpha)$ where $\mathcal{B} \subseteq \mathcal{X}$ and 
-$\alpha : \mathcal{B} \to 2^{\mathcal{U}}$ is a mapping from states to actions such that, by
-playing an action $\alpha(x)$ from state $x \in \mathcal{B}$, with probability $1$ the
-next state reached will also be in $T$. More formally, we require that
-for all $x \in \mathcal{B}$ it holds that
-\begin{itemize}
-	\item $\alpha(x) \in \mathcal{U}$ is non-empty;
-	\item if there are $x_t \in \mathcal{X}$ and $u \in \alpha(x)$ such that
-		$p(x_{t+1} \vert x_t,u_t ) >0$ then $x_{t+1} \in \mathcal{B}$;
-	\item for all $x,x' \in \mathcal{B}$ there is a run from $x$ going to $x'$ and a run going from $x'$ to $x$.
-\end{itemize}
-End components in an MDP can be found using graph analysis techniques ~\cite{BaierKatoen08}.
+%\paragraph*{End components}
+%An \textit{end component} of an MDP $M=(\mathcal{X},\mathcal{U},p)$
+%is a pair $(\mathcal{B},\alpha)$ where $\mathcal{B} \subseteq \mathcal{X}$ and 
+%$\alpha : \mathcal{B} \to 2^{\mathcal{U}}$ is a mapping from states to actions such that, by
+%playing an action $\alpha(x)$ from state $x \in \mathcal{B}$, with probability $1$ the
+%next state reached will also be in $T$. More formally, we require that
+%for all $x \in \mathcal{B}$ it holds that
+%\begin{itemize}
+%	\item $\alpha(x) \in \mathcal{U}$ is non-empty;
+%	\item if there are $x_t \in \mathcal{X}$ and $u \in \alpha(x)$ such that
+%		$p(x_{t+1} \vert x_t,u_t ) >0$ then $x_{t+1} \in \mathcal{B}$;
+%	\item for all $x,x' \in \mathcal{B}$ there is a run from $x$ going to $x'$ and a run going from $x'$ to $x$.
+%\end{itemize}
+%End components in an MDP can be found using graph analysis techniques ~\cite{BaierKatoen08}.
