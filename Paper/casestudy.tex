@@ -1,0 +1,13 @@
+We motivate the work in this paper with a scenario based on the upcoming Mars 2020 mission. We first informally present the problem statement in the context of this scenario, and the case study will also serve as a running example throughout the paper. 
+
+Mars rovers have to operate in mostly unknown environments. Satellite imagery can provide some information, but there is very limited knowledge of the terrain and possible obstacles. For example, the Curiosity rover suffered punctures due to the presence of unforeseen types of rocks. In order to extend the mission, the rover drivers  had to then compensate for possible rocks by driving more judicially. However, this requires far shorter drives as the rocks can only be identified from 10-20 metres away. As a result, the mission was greatly slowed down. 
+
+For on-board decision-making to be viable, more information on local terrain is needed for planning so a human does not need to manually avoid obstacles. In the Mars 2020 mission, a helicopter has been proposed to act as a scout \cite{landau2015helicopter} to assist with planning. Figure \ref{fig:mars2020} shows an artists' rendering of the helicopter flying ahead to scout.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.18]{mars2020.jpg}
+\caption{Proposed helicopter to scout for the Mars rover \cite{landau2015helicopter}.}\label{fig:mars2020}
+\end{figure}
+
+In our example, the rover is tasked with collecting samples of the Martian environment. The environment is modeled as an MDP as motion can be stochastic, i.e, slippage can occur. The mission is given in LTL as it allows us to easily specify high level tasks for the rover, and the decision-making goal is to \emph{maximize} the probability of satisfying the mission specification. The helicopter can send terrain information to the rover to assist in path planning but transmitting information costs power. We provide a method that allows the planner to maximize the probability of completing the mission while also penalizing information transfer. This means the rover must plan to satisfy the mission specification while relying on as little information as possible. The specifics of the experiment is described in section $\ref{sec:exp}$
