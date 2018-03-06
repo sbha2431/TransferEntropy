@@ -28,7 +28,7 @@ def safe_exp(x,out):
         return np.exp(x)
 
 def calc_mu(K,t,mu,mu_states,q,qinit,gwg,mdp,obs_mdp,obs_states,mu_obs):
-    for s_new in set(gwg.states) - set(gwg.edges):
+    for s_new in set(gwg.states):
         (y,x) = gwg.coords(s_new)
         for obstacle_s in obs_states:
             (y2,x2) = gwg.coords(obstacle_s)
@@ -54,7 +54,7 @@ def calc_mu(K,t,mu,mu_states,q,qinit,gwg,mdp,obs_mdp,obs_states,mu_obs):
     return mu,mu_states,mu_obs
 
 def calc_nu(K,t,mu,nu,q,qinit,gwg,obstacle_states):
-    for s_old in set(gwg.states) - set(gwg.edges):
+    for s_old in set(gwg.states):
         (y,x) = gwg.coords(s_old)
         for u in range(gwg.nactions):
             if K == 0:
@@ -100,12 +100,12 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
         mu[K,0,initcoords[0],initcoords[1],gwg.coords(moveobstacles[0])[1],gwg.coords(moveobstacles[0])[0]] = 1.0 #initial distribution
         for s in gwg.states:
             if tuple(reversed(gwg.coords(s))) != targcoords:
-                psi[K,T,gwg.coords(s)[1],gwg.coords(s)[0],:,:] = np.full((gwg.ncols,gwg.nrows),50) # Terminal cost
+                psi[K,T,gwg.coords(s)[1],gwg.coords(s)[0],:,:] = np.full((gwg.ncols,gwg.nrows),10) # Terminal cost
         for t in range(T):
             for s in obs_states:
                 for s2 in obs_states:
                     if s == s2:
-                        psi[K,t,gwg.coords(s)[1],gwg.coords(s)[0],gwg.coords(s2)[1],gwg.coords(s2)[0]] = 50 # collision cost
+                        psi[K,t,gwg.coords(s)[1],gwg.coords(s)[0],gwg.coords(s2)[1],gwg.coords(s2)[0]] = 150 # collision cost
 
     mdp._prepare_post_cache()
     mdp._prepare_pre_cache()
@@ -153,9 +153,9 @@ def alg_m0n0_moveobstacle(gwg,mdp,obs_mdp,obs_states,iter,T,beta,cost,moveobstac
         for t in range(T)[::-1]:
             if np.mod(t,5) == 0:
                 print 'At timestep ', t+1, '/', T
-            for s_old in set(gwg.states) - set(gwg.edges):
+            for s_old in set(gwg.states):
                 (y,x) = gwg.coords(s_old)
-                for obs_s in set(gwg.states) - set(gwg.edges):
+                for obs_s in set(gwg.states):
                     (y2,x2) = gwg.coords(obs_s)
                     # print 'At ', (y,x), ' cost is ', psi_states[y,x]
                     for u in range(gwg.nactions):

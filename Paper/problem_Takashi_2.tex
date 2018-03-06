@@ -4,7 +4,7 @@ After we describe a general framework in Section~\ref{secformulation}, we discus
 \subsection{Mathematical formulation}
 \label{secformulation}
 
-Let $M=(\mathcal{X}, \mathcal{U}, p)$ be a finite MDP with state-action cost $c(x_t, u_t, x_{t+1})$. Let $q_t(u_t|x^t,u^{t-1})$ be the policy to be synthesized. The expected accumulated cost over a time horizon $0\leq t \leq T-1$ is denoted by
+Let $M=(\mathcal{X}, \mathcal{U}, p)$ be a finite MDP with state-action cost $c_t(x_t, u_t, x_{t+1})$. Let $q_t(u_t|x^t,u^{t-1})$ be the policy to be synthesized. The expected accumulated cost over a time horizon $0\leq t \leq T-1$ is denoted by
 \[
 J(X^T, U^{T-1})=\sum_{t=0}^{T-1}\mathbb{E}\{c_t(x_t, u_t, x_{t+1})\}.
 \]
@@ -24,7 +24,6 @@ The \emph{joint distribution} $\mu_{t}(x^{t}, u^{t-1})$ defined recursively by t
 \begin{align*}
 I  (\bar{X}^t;U_t & \vert U^{t-1},\tilde{X}^{t}) \defeq \nonumber \\ &\mathbb{E}_{\mu_T}\bigg\{\log\frac{\mu_{t}(U_t|\bar{X}^{t},U^{t-1},\tilde{X}^t)}{\mu_{t}(U_t\vert U^{t-1}, \tilde{X})^t}\bigg\}.
 \end{align*}
-where for each $t=0,1, ..., T-1$, $\mu_t(x^t, u^{t-1})$ is 
 
 We assume that the observation cost over the time horizon $0\leq t\leq T-1$ is proportional to the \emph{causally conditioned directed information} (also known as \emph{causally conditioned transfer entropy}).
 \begin{equation}

@@ -7,25 +7,25 @@ import m0n0_moveobstacle
 
 
 #Define gridworld parameters
-nrows = 15
-ncols = 20
-nagents = 1
-initial = [237]
-targets = [[261]]
-moveobstacles = [267]
+# nrows = 15
+# ncols = 20
+# nagents = 1
+# initial = [237]
+# targets = [[261]]
+# moveobstacles = [267]
 # obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
-obstacles = [83,103,123,124,125,126,146,147,148,149,150,151,171,191,191,211,46,47,48,49,50,70,67,68,69,89,90,91,92,93,94,114,134,154,174,175,176,196,216]
-obstacles+=[ 26,27,28,29,30,31,32,33,34,35,36,37,38,51,52,53,54,55,56,57,58,71,72,73,74,75,76,77,78,95,96,97,98,115,116,117,118,135,136,137,138,155,156,157,158,177,178,197]
+# obstacles = [83,103,123,124,125,126,146,147,148,149,150,151,171,191,191,211,46,47,48,49,50,70,67,68,69,89,90,91,92,93,94,114,134,154,174,175,176,196,216]
+# obstacles+=[ 26,27,28,29,30,31,32,33,34,35,36,37,38,51,52,53,54,55,56,57,58,71,72,73,74,75,76,77,78,95,96,97,98,115,116,117,118,135,136,137,138,155,156,157,158,177,178,197]
 # obstacles = [15,16,19]
 
 
-# nrows = 9
-# ncols = 7
-# targets = [[50]]
-# obstacles = [31,24]
-# initial = [54]
-# nagents = 1
-# moveobstacles = [52]
+nrows = 9
+ncols = 7
+targets = [[50]]
+obstacles = [31,24]
+initial = [54]
+nagents = 1
+moveobstacles = [52]
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
 # regions['deterministic']= {42,43,44,64,65,66,85,86,87,88,107,108,109,110,111,112,113,130,131,132,133,152,153,172,173,192,193,194,195,213,214,215}
@@ -51,8 +51,8 @@ for s in states:
             transitions.append((s,a,s,1))
 mdp = MDP(states, accepting_states, alphabet, transitions)
 
-# obstaclemovestates = [38,45,52]
-obstaclemovestates = [267,247,227,207,187,167,147]
+obstaclemovestates = [38,45,52]
+# obstaclemovestates = [267,247,227,207,187,167,147]
 
 accepting_states = set()
 transitions = []
@@ -77,8 +77,8 @@ for s in states:
 obstacle_mdp = MDP(states, accepting_states, alphabet, transitions)
 
 
-T = 65
-beta = 10/2.0
+T = 15
+beta = 0.05/2.0
 # cost = np.full((gwg.nactions),1.0)
 cost = np.full((gwg.ncols,gwg.nrows,gwg.ncols*len(moveobstacles),gwg.nrows*len(moveobstacles),gwg.nactions),0)
 # for x in range(gwg.ncols):
