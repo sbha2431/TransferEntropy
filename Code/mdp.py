@@ -45,12 +45,14 @@ class MDP(NFA):
         self._prob_cache[(s, a, t)] = p
 
     def value_iteration(self, T, unknown_trans=set(),
-                        epsilon=0.001, gamma=0.9):
+                        epsilon=0.001, gamma=1):
         """Solving an MDP by value iteration"""
         U1 = dict([(s, 0) for s in self.states])
+        U1.update([(s, 1) for s in self.accepting_states])
         R = dict([((s, a, t), 0) for s in self.states
                   for a in self.available(s)
                   for t in self.post(s, a)])
+        # R.update({(s,a,t):1 for s in self.states for a in self.available(s) for t in self.post(s,a) if t in self.accepting_states})
         P = dict([((s, a, t), set()) for s in self.states
                   for a in self.available(s)
                   for t in self.post(s, a)])

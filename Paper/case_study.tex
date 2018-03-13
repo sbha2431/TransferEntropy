@@ -4,6 +4,7 @@ We look at a motion planning problem shown in Figure \ref{fig:casestudy}\subref{
 \subfloat[Gridworld with moving obstacle \label{fig:exp1}]{
 \begin{tikzpicture}[scale=1.2]
 \draw[step=0.5cm,color=gray] (-1.5,-2.5) grid (1,1);
+\filldraw[fill=red,draw=black] (0,0.5) rectangle (-0.5,0);
 \filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
 \filldraw[fill=red,draw=black] (0,-0.5) rectangle (-0.5,-1);
 \filldraw[fill=green,draw=black] (-1.5,-2.5) rectangle (-1,-2.0);
@@ -18,7 +19,7 @@ We look at a motion planning problem shown in Figure \ref{fig:casestudy}\subref{
 \node at (0.73,+0.75) {\tiny{4}};
 \node at (-1.33,+0.25) {\tiny{5}};
 \node at (-0.85,+0.25) {\tiny{6}};
-\node at (-0.35,+0.25) {\tiny{7}};
+\node at (-0.3,+0.25) {\tiny{7}};
 \node at (0.25,+0.25) {\tiny{8}};
 \node at (0.75,+0.25) {\tiny{9}};
 \node at (-1.28,-0.27) {\tiny{10}};
@@ -65,9 +66,11 @@ We look at a motion planning problem shown in Figure \ref{fig:casestudy}\subref{
 \caption{Gridworld and DFA  with $\textrm{Acc}_{\mathcal{M}} = (s_1)$ depicting a scenario where agent in blue has to reach green target cell without crashing into the red static obstacles or the orange moving obstacle.}\label{fig:casestudy}
 \end{figure}
 
+The agent has the choice of moving in 4 directions - North, South, East, and West or staying still. The motion is stochastic - i.e, it has a probability of slip. For example, if it chooses to move north, it has a probability to 'slip' and move to a state north east or north west. 
+
 The state space of the agent is $(x,y,x_{obs},y_{obs})$ where $(x_{obs},y_{obs})$ form the position of the moving obstacle. We assume that the state of the moving obstacle to be expensive to observe. Formally, we let $\mathcal{\tilde{X}} = (x,y)$ and $\mathcal{\bar{X}} = (x_{obs},y_{obs})$. 
 
- Intuitively we expect to see if that we set the $\beta$ parameter high, \ie if the cost of information is high, the agent will go the long way around the wall as it will be too expensive to observe the moving obstacle. However, if the agent knows the position of the moving obstacle at all times, it can easily plan to avoid collision, and hence for low $\beta$, we expect to see the agent go through shorter route. We use a time horizon $T = 25$ and test for $\beta = 0.5$ and $\beta=5$
+Since there is a probability to slip, the agent has a non-zero probability of crashing and not satisfying the specification if it goes the long way around the wall. If the agent knows the position of the moving obstacle at all times, it can plan to avoid collision, and hence the shorter path will have the higher probability of satisfaction. Intuitively we expect to see if that we set the $\beta$ parameter high, \ie if the cost of information is high, the agent will go the long way around the wall as it will be too expensive to observe the moving obstacle. We use a time horizon $T = 25$ and test for $\beta = 0.5$ and $\beta=5$
 
 \begin{figure}
 	\subfloat[$\beta = 0.5$\label{simple-grid}]{
@@ -82,3 +85,13 @@ The state space of the agent is $(x,y,x_{obs},y_{obs})$ where $(x_{obs},y_{obs})
 
 Figure \ref{fig:expres} shows the probability distributions of the agent at a specific time $t=16$. Clearly, in the case where $\beta=0.5$, the agent is able to go through the region where the moving obstacle operates. However, when we increase the cost of information, the agent moves around the static obstacles.
 
+\subsection{Mars rover case study}\label{sec:marsexp}
+Now, we present the example of the Mars rover discussed in section \ref{sec:casestudy}. Figure \ref{fig:mars} shows a simple representation of the environment. We start with a rough knowledge of the environment. We know the red region is impassable terrain. We also know that there is a region with a high distribution of obstacles and one with a low distribution of obstacles. All other regions are assumed to be obstacle free.
+
+\begin{figure}
+\subfloat[Representation of a martian environment for case study.\label{fig:mars}]{
+	\includegraphics[scale=0.08]{casestudygrid.png}
+}
+\end{figure}
+
+The LTL specification is again $\lnot$'crash' $\LTLuntil$ 'goal' where the goal is the green area. This time the state in the MDP is given by $(x,y,(o_i,...o_n))$ where $(o_1,..,o_n) \in \mathbb{B}^n$ are boolean variables representing where $o_i$ evaluates to True if an obstacle is present at state $i$. We assume obstacles can only be present in the two regions shown in figure \ref{fig:mars}. 

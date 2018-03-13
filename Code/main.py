@@ -42,7 +42,7 @@ accepting_states = set()
 transitions = []
 for s in states:
     for a in alphabet:
-        if s not in targets:
+        if s not in targets[0]:
             for t in np.nonzero(gwg.prob[gwg.actlist[a]][s])[0]:
                 p = gwg.prob[gwg.actlist[a]][s][t]
                 transitions.append((s, a, t, p))
@@ -51,7 +51,7 @@ for s in states:
             transitions.append((s,a,s,1))
 mdp = MDP(states, accepting_states, alphabet, transitions)
 
-obstaclemovestates = [38,45,52]
+obstaclemovestates = [38,45,52,59]
 # obstaclemovestates = [267,247,227,207,187,167,147]
 
 accepting_states = set()

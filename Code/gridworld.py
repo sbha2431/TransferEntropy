@@ -169,6 +169,16 @@ class Gridworld():
         if state in self.regions['deterministic']:
             return 'deterministic'
 
+    def close_states(self,s,dist):
+        statecoords = list(self.coords(s))
+        cs = []
+        for t in self.states:
+            targcoords = list(self.coords(t))
+            targdist = np.sqrt((targcoords[0]-statecoords[0])**2 + (targcoords[1]-statecoords[1])**2)
+            if t != s and targdist <= dist:
+                cs.append(t)
+        return cs
+
     ## Everything from here onwards is for creating the image
 
     def render(self, size=30):
@@ -384,7 +394,7 @@ class Gridworld():
             color = {'sand': (223, 225, 179), 'gravel': (255, 255, 255), 'grass': (211, 255, 192),
                      'pavement': (192, 255, 253),'deterministic': (255,255,255)}
             for s in range(self.nstates):
-                if s not in self.edges and not any(s in x for x in self.targets) and s not in self.obstacles and not any(s in x for x in self.colorstates):
+                if s not in self.obstacles and not any(s in x for x in self.targets) and s not in self.obstacles and not any(s in x for x in self.colorstates):
                     (x, y) = self.indx2coord(s)
                     coords = pygame.Rect(y - self.size / 2, x - self.size / 2, self.size, self.size)
                     coords = pygame.Rect(y, x, self.size, self.size)

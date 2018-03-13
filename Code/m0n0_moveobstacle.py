@@ -50,7 +50,7 @@ def calc_mu(K,t,mu,mu_states,q,qinit,gwg,mdp,obs_mdp,obs_states,mu_obs):
                                        for (obstacle_s_old,u_obs) in obs_mdp.pre(obstacle_s)])
             mu_obs[y2,x2] = sum(sum(mu[K,t,:,:,x2,y2]))
         mu_states[y,x] = sum(sum(mu[K,t,x,y,:,:]))
-    # mu_states = safe_div(mu_states,sum(sum(mu_states)),0.0)
+    mu_states = safe_div(mu_states,sum(sum(mu_states)),0.0)
     return mu,mu_states,mu_obs
 
 def calc_nu(K,t,mu,nu,q,qinit,gwg,obstacle_states):
