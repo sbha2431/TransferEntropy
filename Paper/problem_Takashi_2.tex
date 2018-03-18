@@ -11,7 +11,17 @@ J(X^T, U^{T-1})=\sum_{t=0}^{T-1}\mathbb{E}\{c_t(x_t, u_t, x_{t+1})\}.
 Suppose that the state space of $M$ is split into the space $\bar{\mathcal{X}}$ of ``expensive to observe'' state variables and the space $\tilde{\mathcal{X}}$ of ``free'' state variables as $\mathcal{X}=\bar{\mathcal{X}}\times \tilde{\mathcal{X}}$.
 At every time step, observing a realization of the ``free'' component $\tilde{X}_t$ of the state random variable $X_t=(\bar{X}_t, \tilde{X}_t)$ is free of charge, whereas observing the ``expensive'' component $\bar{X}_t$ incurs cost. 
 
-As a motivating scenario, imagine the MDP models a Mars rover. The value of $\bar{x}$ is measured by an orbiter while $\tilde{x}$ is sensed using on-board sensors. Since the orbiter will only be able to communicate with the rover during part of its orbit, we will want to penalize the reliance on this information in the policy synthesis process. To do this we introduce some information-theoretic terms. 
+As an example, imagine the MDP models a Mars rover. The value of $\bar{x}$ is measured by an orbiter or a scouting helicopter while $\tilde{x}$ is sensed using on-board sensors. Since the orbiter will only be able to communicate with the rover during part of its orbit, we will want to penalize the reliance on this information in the policy synthesis process. In the case of the helicopter we want to limit the transmission between them as this can consume a lot of power. We can represent this as a feedback control architecture shown in Figure~\ref{fig:NCS}. 
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{comm.pdf}
+\caption{Example of a feedback control structure with remote and local sensors}
+\label{fig:NCS}
+\end{figure}
+
+At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the rover, i.e, from onboard sensors, while the expensive component $\bar{X}_t$ is only available from a remote sensor, i.e, the scouting helicopter. Before the state information can be transmitted, the remote sensor has to encode it into bits. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ representing the state information based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. The codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$. We aim to limiting the data transfer from the remote sensor to on-board controller. 
+
+ We now introduce some information-theoretic terms. 
 
 The \emph{joint distribution} $\mu_{t}(x^{t}, u^{t-1})$ defined recursively by the state transition probability $p_t(x_{t+1}|x_t, u_t)$ and a decision policy $q_t(u_t|x^t, u^{t-1})$ as
 \[
@@ -38,7 +48,27 @@ The main problem we study in this paper is
 \end{align}
 where $\beta>0$ is a given constant.
 
-A communication-theoretic meaning of the optimization problem \eqref{eqmainproblem} is discussed in section \ref{sec:ab} where we provide a physical interpretation of the transfer entropy cost.
+
+Assuming that transmitting data over the communication channel incurs unit cost $\beta$ per \emph{bit}, consider the following communication design problem
+\begin{equation}
+\min_{\{\mathcal{W}_t, p_t(w_t|\bar{x}^t, w^{t-1}), p_t(u_t|\tilde{x}^t, w^t, u^{t-1}) \}_{t=0}^{T-1}}  J(X^T, U^{T-1}) +\beta R \label{eqcommproblem}
+\end{equation}
+where $R=\sum_{t=0}^{T-1}R_t$ is the total amount of data. 
+The next result shows that \eqref{eqdi} provides a lower bound to $R$.
+\begin{theorem}
+\label{theorate}
+Suppose that the plant dynamics is given by an MDP $M$. For any choice of the codebook $\mathcal{W}_t$, sensor policy $p_t(w_t|\bar{x}^t, w^{t-1})$ and controller policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$ for $0\leq t\leq T-1$ in Figure~\ref{fig:NCS}, we have
+\[
+R \geq I(\bar{X}^{T-1}\rightarrow U^{T-1}\| \tilde{X}^{T-1}).
+\]
+\end{theorem}
+\begin{proof}
+See Appendix \ref{sec:prf}
+\end{proof}
+Theorem~\ref{theorate} shows that the optimization problem \eqref{eqmainproblem} provides a fundamental performance limitation of the networked control system shown in Figure~\ref{fig:NCS} in that the optimal value of \eqref{eqcommproblem} is lower bounded by the optimal value of \eqref{eqmainproblem}.
+%
+%
+%A communication-theoretic meaning of the optimization problem \eqref{eqmainproblem} is discussed in section \ref{sec:ab} where we provide a physical interpretation of the transfer entropy cost.
 
 % can be given by considering a feedback control architecture shown in Figure \ref{fig:NCS}. 
 %At every time step $t$, assume that the free component $\tilde{X}_t$ of the state vector is immediately available to the controller, while the expensive component $\bar{X}_t$ is only available at a remote sensor. The remote sensor produces a discrete codeword $W_t\in\mathcal{W}_t$ based on a policy $p_t(w_t|\bar{x}^t, w^{t-1})$, where $\mathcal{W}_t$ is a certain codebook such that $|\mathcal{W}_t|=2^{R_t}$. Codeword is transmitted over a noiseless communication channel and received by the controller without delay, and a control input $U_t$ is generated based on a policy $p_t(u_t|\tilde{x}^t, w^t, u^{t-1})$. The transfer entropy cost in \eqref{eqdi} can be used to model the \emph{communication rate}. In section \ref{sec:ab}, we present a formal proof showing that \eqref{eqdi} provides a lower bound to the communication rate to justify its use in our problem formulation.

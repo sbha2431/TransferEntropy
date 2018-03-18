@@ -25,9 +25,9 @@
 \title{Minimal-Information Control of MDPs with Temporal Logic Constraints
 }
 
-\author{Suda Bharadwaj$^{1}$ \and Takashi Tanaka$^{1}$ \and Ufuk Topcu$^{1}$% <-this % stops a space
+\author{Suda Bharadwaj \and Takashi Tanaka \and Ufuk Topcu% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{$^{1}$ Suda Bharadwaj, Takashi Tanaka, and Ufuk Topcu are with the Department of Aerospace Engineering and Engineering Mechanics at the University of Texas at Austin. E-mail: \{sudab, ttanaka, utopcu\}@utexas.edu}%
+\thanks{Suda Bharadwaj, Takashi Tanaka, and Ufuk Topcu are with the Department of Aerospace Engineering and Engineering Mechanics at the University of Texas at Austin. E-mail: \{suda.b, ttanaka, utopcu\}@utexas.edu}%
 %\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University, Dayton, OH 45435, USA {\tt\small b.d.researcher@ieee.org}}%
 }
 
@@ -52,7 +52,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We consider Markov decision processes (MDPs) in which the information cost quantified by transfer entropy is added to an objective specified as a co-safe linear temporal logic (LTL) formula. We assume some of the state variables are expensive to measure, and the information cost is given by the transfer entropy from the specified state variables to the control action. We then find the policy that acts to minimize the weighted sum of the information cost and the cost of failing to satisfy the specification. We provide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical experiment involving navigation and path planning and demonstrate the effect of adding information cost to certain state variables.
+We consider Markov decision processes (MDPs) with an information cost quantified by transfer entropy and task specification expressed in co-safe linear temporal logic (LTL). We assume that certain state variables are expensive to measure, and quantify the information flow from those state variables to the control action with transfer entropy. We show that the transfer entropy lower bounds the amount of data in bits transferred from the specified state variables to the controller. We then provide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical case study involving navigation and path planning and demonstrate the effect on decision-making of adding information cost to certain state variables.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,8 +60,8 @@ We consider Markov decision processes (MDPs) in which the information cost quant
 \section{Introduction}
 \input{intro}
 
-\section{Case Study}\label{sec:casestudy}
-\input{casestudy}
+%\section{Case Study}\label{sec:casestudy}
+%\input{casestudy}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -96,8 +96,8 @@ set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_
 \input{AB_alg}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Interpretation of directed information}\label{sec:ab}
-\input{comm_rate.tex}
+%\section{Interpretation of directed information}\label{sec:ab}
+%\input{comm_rate.tex}
 
 
 \section{Experiment results}\label{sec:exp}
