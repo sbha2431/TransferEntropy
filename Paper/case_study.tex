@@ -1,4 +1,12 @@
-In this section we provide two different case studies involving a mars rover. In the first experiment the rover has to plan around a moving obstacle, but the knowledge of the location of the moving obstacle is penalized. In the second experiment, the rover has some a priori knowledge of the terrain, but there is a cost to using any additional information. 
+We model a scenario where the rover is tasked with collecting samples from a specific region. The environment is modeled as an MDP as motion can be stochastic, i.e, slippage can occur. The mission is specified as a co-safe LTL specification. 
+
+We analyze two different case studies. In the first experiment the rover has to plan around a moving obstacle, but the knowledge of the location of the moving obstacle is penalized.
+
+ In the second experiment, the rover has some a priori knowledge of the terrain, but there is a cost to using any additional information. 
+
+
+
+In this section we provide 
 
 \subsection{Moving obstacle}
 We solve the motion planning problem under sensing constraints in a gridworld as shown in \ref{fig:casestudy}\subref{fig:exp1}. Consider a scenario where rover is tasked with reaching the goal state in green whilst avoiding collisions with the red static obstacles and an orange moving obstacle that moves in the area shown. For example, the helicopter can be completing a separate mission and we do not want the rover and helicopter to collide, but we also want to limit their communication to conserve power. Hence, we treat the helicopter as a moving obstacle and add an information cost to its position.
@@ -92,20 +100,22 @@ Figure \ref{fig:expres} shows the probability distributions of the agent at a sp
 \subsection{Static obstacles}\label{sec:marsexp}
 Now, we present the example of the Mars rover navigating in the presence of static obstacles. Figure \ref{fig:mars} shows an example of a simple map of the environment that can obtained from a satellite image. This gives us a rough knowledge of the environment. We know the red region is impassable terrain. We also know that there is a region with a high density of obstacles and one with a low density of obstacles. All other regions are assumed to be obstacle free.
 
+The helicopter can send information on the exact locations of obstacles to the rover to assist in path planning, however, we assign a cost to this information.
+
 \begin{figure}
-\centering
+
 \begin{minipage}{5.0cm}
 \subfloat[Simple martian environment for case study. The red region is already known as impassable terrain. Additionally, two areas are identified as having a high and low probability of obstacles respectively\label{fig:mars}]{
-	\includegraphics[scale=0.1]{casestudygrid.png}
+	\includegraphics[scale=0.14]{casestudygrid.png}
 }
 \end{minipage}
 
 \begin{minipage}{5.0cm}
 \subfloat[True obstacle distribution of the scenario from \ref{fig:mars}. Red cells are obstacles, and the green cells represent the target region the rover shown in blue is trying to reach. \label{fig:mars_grid}]{
-	\includegraphics[scale=0.35]{casestudygrid_sim.png}
+	\includegraphics[scale=0.45]{casestudygrid_sim.png}
 }
 \end{minipage}
-\caption{We represent the environment in \ref{fig:mars} as a gridworld in \ref{fig:mars_grid} which we model as an MDP. 
+\caption{ We represent the environment in \ref{fig:mars} as a gridworld in \ref{fig:mars_grid} which we model as an MDP. 
 	}
 \end{figure}
 

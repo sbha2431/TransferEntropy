@@ -22,7 +22,7 @@ import m0n0_moveobstacle
 nrows = 9
 ncols = 7
 targets = [[50]]
-obstacles = [31,24]
+obstacles = [17,31,24]
 initial = [54]
 nagents = 1
 moveobstacles = [52]

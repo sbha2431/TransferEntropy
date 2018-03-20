@@ -22,12 +22,13 @@
 \input{macros}
 \def\fat#1{#1}
 
-\title{Minimal-Information Control of MDPs with Temporal Logic Constraints
+\title{Transfer Entropy MDPs with  Temporal Logic Specifications
 }
 
-\author{Suda Bharadwaj \and Takashi Tanaka \and Ufuk Topcu% <-this % stops a space
+\author{Suda Bharadwaj \and Mohamadreza Ahmadi \and
+ Takashi Tanaka \and Ufuk Topcu% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{Suda Bharadwaj, Takashi Tanaka, and Ufuk Topcu are with the Department of Aerospace Engineering and Engineering Mechanics at the University of Texas at Austin. E-mail: \{suda.b, ttanaka, utopcu\}@utexas.edu}%
+\thanks{All authors are with the University of Texas at Austin. E-mail: \{suda.b, mrahmadi, ttanaka, utopcu\}@utexas.edu}%
 %\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University, Dayton, OH 45435, USA {\tt\small b.d.researcher@ieee.org}}%
 }
 
@@ -52,7 +53,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We consider Markov decision processes (MDPs) with an information cost quantified by transfer entropy and task specification expressed in co-safe linear temporal logic (LTL). We assume that certain state variables are expensive to measure, and quantify the information flow from those state variables to the control action with transfer entropy. We show that the transfer entropy lower bounds the amount of data in bits transferred from the specified state variables to the controller. We then provide a method to synthesize a policy that minimizes the weighted sum of the information cost and the probability of failure to satisfy the LTL specification. We solve the problem by deriving sufficient conditions for optimality, and compute the optimal policy using a modified Arimoto-Blahut algorithm. Finally, we present a numerical case study involving navigation and path planning and demonstrate the effect on decision-making of adding information cost to certain state variables.
+Applications in autonomy, in particular, space rovers motivate the need for control techniques that take into account uncertain environments, communication, and sensing constraints, while satisfying high-level mission specifications. In order to address such  challenges, we consider a class of Markov decision processes (MDPs), where the cost function is \emph{transfer entropy} which we refer to as TEMDPs. In this context, we study high-level mission specifications in terms of co-safe linear temporal logic (LTL) formulae.   Based on the dynamic programming principle, we provide a method to synthesize a policy that minimizes the weighted sum of the cost function and the probability of failure to satisfy the LTL specification. We show that this policy can be obtained using a modified Arimoto-Blahut algorithm. Finally, we show the efficacy of the proposed method by applying it to address navigation and path planning scenarios of a Mars rover, demonstrating the effect of considering the transfer entropy~cost.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,20 +70,21 @@ We consider Markov decision processes (MDPs) with an information cost quantified
 The sequence $(x_0,x_{1}...x_t)$ is denoted $x^t$ and the subsequence $x_l,x_{k+1}...x_k$ is denoted by $x_{l}^{k}$. We use upper-case letters to denote random variables and lower-case letters for the realizations of the corresponding random variable. \\
 We denote by $\dist{\mathcal{X}}$ the set of all probability distributions on a finite
 set $\mathcal{X}$, \ie all functions $f: \mathcal{X} \to [0,1]$ such that $\sum_{x\in \mathcal{X}}f(x)=1$. Finally, for a set $\mathcal{S}$, we define $2^\mathcal{S}$ as the set of all subsets of $\mathcal{S}$ and $S^{\omega}$ as the set of all infinite sequences of elements in $\mathcal{S}$
-%\subsection{Markov decision processes}
+\subsection{Markov decision processes}
 \input{MDP} 
 
-%\subsection{Temporal Logic}
+\subsection{Temporal Logic}
 \input{LTL}
 
-%\subsection{Information theory}
-
+\subsection{Information cost}
+\input{infotheory}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Problem statement}
 \input{problem_Takashi_2}
 
+\section{Incorporating temporal logic constraints}
 \input{problem_Suda}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,7 +116,7 @@ In this paper, we presented a formal way to integrate co-safe LTL constraints in
 
 \appendices
 \vspace{-0.15cm}
-\section{Proof of Theorem 5.1} \label{sec:prf}
-\input{app1_off}
+%\section{Proof of Theorem 5.1} \label{sec:prf}
+%\input{app1_off}
 
 \end{document}

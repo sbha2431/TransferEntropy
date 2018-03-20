@@ -6,11 +6,21 @@ import m0n0_staticobstacle
 import copy
 import itertools
 
-nrows = 9
-ncols = 7
-targets = [[50]]
-obstacles = [31,24,38,45,10,17]
-initial = [54]
+# Paper example
+nrows = 15
+ncols = 20
+targets = [[240,241,260,261,280,281]]
+obstacles = [106,107,108,109,110,111,112,126,127,128,129,130,131,132,146,147,148,149,150,151,152,166,167,168,169,169,170,171,172,
+             243,208,229,268,267,287,288,273,254,193,191,212,232,253,225,244,248,185,204,205,192,249,270,
+             8,50,63,55,85,26,29]
+initial = [277]
+
+
+# nrows = 9
+# ncols = 7
+# targets = [[50]]
+# obstacles = [31,24,38,45,10,17]
+# initial = [54]
 nagents = 1
 moveobstacles = []
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
